@@ -1,0 +1,48 @@
+appId: com.draftone.app
+productName: draft-one
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - out/**/*
+  - resources/**/*
+  - '!resources/binaries/**/*'
+  - package.json
+extraResources:
+  - from: resources/binaries
+    to: binaries
+    filter:
+      - '**/*'
+  - from: resources/icon.ico
+    to: icon.ico
+  - from: resources/icon.png
+    to: icon.png
+  - from: resources/windows
+    to: windows
+    filter:
+      - '**/*.ps1'
+electronLanguages:
+  - zh-CN
+  - en-US
+win:
+  artifactName: ${productName}-Windows-${version}-x64.${ext}
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: zip
+      arch:
+        - x64
+  icon: resources/icon.ico
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: true
+  deleteAppDataOnUninstall: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: draft-one
+  include: resources/installer.nsh
+  artifactName: ${productName}-Setup-${version}.${ext}
+  differentialPackage: false
+  useZip: true

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build & Bundled outputs
+out
+dist
+build
+release
+
+# Binary Executables & Large Kernels
+*.exe
+*.dll
+*.sys
+resources/binaries/*
+!resources/binaries/.gitkeep
+!resources/binaries/DraftOneService.cs
+!resources/binaries/README.md
+
+# GeoData & Databases
+*.dat
+*.bin
+
+# User Data & Local Configs
+data/
+user-settings.json
+config.yaml
+subscriptions/
+
+# Logs & Debugging
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS & Editor generated files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+test_node.txt

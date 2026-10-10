@@ -1,0 +1,160 @@
+name: Release Windows x64
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag (leave empty if triggering from a tag)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build & Package Windows x64
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node.js 20 with pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Use Official NPM Registry in CI
+        shell: pwsh
+        run: |
+          if (Test-Path ".npmrc") {
+            Remove-Item ".npmrc" -Force
+          }
+
+      - name: Install Node Dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Optional pre-test step commented out for maximum CI build speed
+      # - name: Run Typecheck & Unit Tests
+      #   run: pnpm run test
+
+      - name: Prepare Mihomo Core, Service, GeoData and anti-AD
+        run: node scripts/prepare-binaries.mjs
+        env:
+          FORCE_DOWNLOAD: 'true'
+          MIHOMO_VERSION: 'v1.19.32'
+
+      - name: Verify bundled anti-AD list
+        shell: pwsh
+        run: |
+          $p = "resources/binaries/anti-ad.yaml"
+          if (-not (Test-Path $p)) { throw "missing $p" }
+          $len = (Get-Item $p).Length
+          if ($len -lt 100000) { throw "anti-ad.yaml is too small: $len bytes" }
+          Write-Host "Bundled anti-ad.yaml: $len bytes"
+
+      - name: Determine Release Tag
+        id: release_tag
+        shell: pwsh
+        run: |
+          $inputTag = "${{ github.event.inputs.tag }}"
+          if ($inputTag -ne "") {
+            $tag = $inputTag
+          } elseif ($env:GITHUB_REF -like "refs/tags/*") {
+            $tag = $env:GITHUB_REF -replace "refs/tags/", ""
+          } else {
+            $tag = "v" + (Get-Content package.json | ConvertFrom-Json).version
+          }
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          $tagVersion = $tag -replace '^v', ''
+          if ($tagVersion -ne $version) {
+            throw "Tag $tag does not match package.json version $version"
+          }
+          $isDev = $tag -match '(?i)-dev(\.|$)'
+          if ($isDev) { $channel = 'true' } else { $channel = 'false' }
+          Write-Host "Target Tag: $tag ; dev=$channel"
+          echo "TAG_NAME=$tag" >> $env:GITHUB_ENV
+          echo "IS_DEV=$channel" >> $env:GITHUB_ENV
+          $notes = @(
+            "- draft-one-Setup-$version.exe"
+            "- draft-one-Windows-$version-x64.zip"
+            "- draft-one-Setup-$version-Update.exe"
+            "- draft-one-Windows-$version-Update-x64.zip"
+          ) -join "`n"
+          Set-Content -Encoding utf8 -Path "$env:GITHUB_WORKSPACE/release-notes.md" -Value $notes
+
+      - name: Build full installer and lightweight update
+        run: pnpm run build:pack
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - name: Verify packages
+        shell: pwsh
+        run: |
+          $fullZip = Get-ChildItem "dist/*-Windows-*-x64.zip" -ErrorAction SilentlyContinue | Where-Object { $_.Name -notlike "*-Update-x64.zip" }
+          $fullExe = Get-ChildItem "dist/*-Setup-*.exe" -ErrorAction SilentlyContinue | Where-Object { $_.Name -notlike "*-Update.exe" }
+          if (-not $fullZip) { throw "missing full portable zip" }
+          if (-not $fullExe) { throw "missing full setup exe" }
+          Write-Host "Full install: $($fullExe.Name), $($fullZip.Name)"
+          $updateZip = Get-ChildItem "dist/*-Update-x64.zip" -ErrorAction SilentlyContinue
+          $updateExe = Get-ChildItem "dist/*-Update.exe" -ErrorAction SilentlyContinue
+          if ($updateZip -and $updateExe) {
+            Write-Host "Lightweight update: $($updateExe.Name), $($updateZip.Name)"
+          }
+
+      - name: List Artifacts
+        shell: pwsh
+        run: |
+          Write-Host "Build output in dist/:" -ForegroundColor Cyan
+          Get-ChildItem -Path dist
+
+      - name: Publish dev release
+        if: env.IS_DEV == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          draft: false
+          prerelease: true
+          generate_release_notes: true
+          body_path: release-notes.md
+          files: |
+            dist/*-Setup-*.exe
+            dist/*-Windows-*-x64.zip
+            dist/*-Update.exe
+            dist/*-Update-x64.zip
+            dist/*.blockmap
+            dist/latest.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish stable release
+        if: env.IS_DEV != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body_path: release-notes.md
+          files: |
+            dist/*-Setup-*.exe
+            dist/*-Windows-*-x64.zip
+            dist/*-Update.exe
+            dist/*-Update-x64.zip
+            dist/*.blockmap
+            dist/latest.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
