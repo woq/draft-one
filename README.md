@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>现代化 Windows 代理客户端</strong><br>
-  融合 <strong>v2rayN 自由直观的节点路由编辑</strong> 与 <strong>Clash Verge Rev 般优雅现代 UI</strong>。<br>
+  融合 <strong>v2rayN 自由直观的节点路由编辑</strong> 与 <strong>Soft Tonal 深色界面</strong>。<br>
   由 <code>mihomo</code> (Clash.Meta) 内核驱动，以节点为中心，面向 24/7 长期不间断运行深度优化。
 </p>
 
@@ -107,8 +107,9 @@
 
 - **代理内核**：`mihomo` (Clash.Meta) Windows x64
 - **桌面应用**：`Electron 33` + `electron-vite`
-- **前端界面**：`React 18` + `TypeScript` + `Tailwind CSS` + `lucide-react` + `@dnd-kit`。界面状态放在 `App.tsx`，经 preload IPC 交给主进程；`zustand` 在依赖里，当前页面没有使用。
+- **前端界面**：`React 18` + `TypeScript` + `Tailwind CSS` + `lucide-react` + `@dnd-kit`。界面状态放在 `App.tsx`，经 preload IPC 交给主进程；`zustand` 在依赖里，当前页面没有使用。视觉为 **Soft Tonal**（深色色阶分层、少描边、冰蓝强调），令牌在 `src/renderer/src/index.css`。
 - **构建测试**：`Node.js test runner`。`test/src-modules.test.mjs` 直接 import `src/main`。`test/unit-test.mjs` 仍有一份平行实现。打包用 `electron-builder`
+- **预览实例**：`pnpm dev` 与 `dist/win-unpacked` 默认独立 `userData` / AppUserModelId，可与已安装版并存；`--preview` / `--no-preview` 可覆盖。正式安装包不是预览实例。
 - **界面分页**：控制面板、节点中心、流量统计、路由分流、规则库、DNS 策略、内核日志、系统服务与工具、应用设置。系统代理和 TUN 只在控制面板。广告域名在路由规则里，RULE-SET 载荷是 `anti-ad`，默认关闭。各页到内核的链路见 [ARCHITECTURE.md 第 6 节](./ARCHITECTURE.md#6-模块链路)。
 
 ---

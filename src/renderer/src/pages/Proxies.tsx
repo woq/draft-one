@@ -591,15 +591,15 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
   const getDelayBadge = (delay?: number) => {
     if (delay === undefined) {
       return (
-        <span className="text-[11px] font-mono text-slate-500 flex items-center gap-1">
-          <Wifi className="w-3 h-3 text-slate-600" />
+        <span className="text-[11px] font-mono text-fx-muted flex items-center gap-1">
+          <Wifi className="w-3 h-3 text-fx-muted" />
           未测速
         </span>
       )
     }
     if (delay < 0) {
       return (
-        <span className="text-[11px] font-mono text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20 flex items-center gap-1">
+        <span className="text-[11px] font-mono text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded flex items-center gap-1">
           <WifiOff className="w-3 h-3" />
           超时
         </span>
@@ -607,20 +607,20 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
     }
     if (delay < 200) {
       return (
-        <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+        <span className="text-[11px] font-mono text-fx-accent bg-fx-accent-dim px-1.5 py-0.5 rounded">
           {delay} ms
         </span>
       )
     }
     if (delay < 500) {
       return (
-        <span className="text-[11px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+        <span className="text-[11px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">
           {delay} ms
         </span>
       )
     }
     return (
-      <span className="text-[11px] font-mono text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+      <span className="text-[11px] font-mono text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded">
         {delay} ms
       </span>
     )
@@ -632,10 +632,10 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Server className="w-5 h-5 text-blue-400" />
-            <h2 className="text-lg font-bold text-slate-100">节点中心 (以节点为准)</h2>
+            <Server className="w-5 h-5 text-fx-accent" />
+            <h2 className="text-lg font-bold text-fx-text">节点中心 (以节点为准)</h2>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-fx-muted mt-1">
             支持多订阅聚合管理与用量监控，点击节点直接秒切出站代理。
           </p>
         </div>
@@ -643,7 +643,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
         <div className="flex items-center gap-2.5 flex-wrap">
           <button
             onClick={() => setShowAddSub(!showAddSub)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white shadow-sm transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-cyan-400 text-xs font-semibold text-white shadow-sm transition"
           >
             <Plus className="w-4 h-4" />
             <span>添加订阅</span>
@@ -659,33 +659,25 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
           <button
             onClick={() => setShowImportModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 shadow-sm transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fx-surface hover:bg-fx-surface-hover text-xs font-semibold text-fx-text shadow-sm transition"
           >
-            <Link2 className="w-4 h-4 text-blue-400" />
+            <Link2 className="w-4 h-4 text-fx-accent" />
             <span>导入分享链接</span>
           </button>
 
           <button
             onClick={handleUpdateAllSubs}
             disabled={isUpdatingAll || subscriptions.length === 0}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-              isUpdatingAll
-                ? 'bg-slate-800 text-slate-500 border-slate-700'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${ isUpdatingAll ? 'bg-fx-surface text-fx-muted ' : 'bg-fx-surface hover:bg-fx-surface-hover text-fx-text ' }`}
           >
-            <RotateCw className={`w-3.5 h-3.5 ${isUpdatingAll ? 'animate-spin text-blue-400' : ''}`} />
+            <RotateCw className={`w-3.5 h-3.5 ${isUpdatingAll ? 'animate-spin text-fx-accent' : ''}`} />
             <span>{isUpdatingAll ? '正在同步...' : '更新所有订阅'}</span>
           </button>
 
           <button
             onClick={handleTestAll}
             disabled={isTestingAll || (config.nodes || []).length === 0}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-              isTestingAll
-                ? 'bg-slate-800 text-slate-500 border-slate-700'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${ isTestingAll ? 'bg-fx-surface text-fx-muted ' : 'bg-fx-surface hover:bg-fx-surface-hover text-fx-text ' }`}
           >
             <Zap className={`w-4 h-4 text-amber-400 ${isTestingAll ? 'animate-bounce' : ''}`} />
             <span>{isTestingAll ? '正在批量测速...' : '一键批量测速'}</span>
@@ -697,17 +689,17 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
       {showAddSub && (
         <form
           onSubmit={handleAddSubscription}
-          className="p-5 rounded-2xl bg-slate-900/90 border border-blue-500/30 shadow-2xl shadow-blue-500/5 space-y-4"
+          className="p-5 rounded-2xl bg-fx-surface space-y-4"
         >
           <div className="flex items-center justify-between">
-            <div className="text-xs font-bold text-slate-200 flex items-center gap-2">
-              <Plus className="w-4 h-4 text-blue-400" />
+            <div className="text-xs font-bold text-fx-text flex items-center gap-2">
+              <Plus className="w-4 h-4 text-fx-accent" />
               <span>添加新机场订阅</span>
             </div>
             <button
               type="button"
               onClick={() => setShowAddSub(false)}
-              className="text-xs text-slate-500 hover:text-slate-300"
+              className="text-xs text-fx-muted hover:text-fx-text/90"
             >
               关闭
             </button>
@@ -721,14 +713,14 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               placeholder="订阅备注名称 (如: 主力机场、备用海豚)"
               value={subName}
               onChange={(e) => setSubName(e.target.value)}
-              className="bg-slate-950/80 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+              className="bg-fx-bg rounded-lg px-3 py-2 text-xs text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
             />
             <input
               type="text"
               placeholder="https://... 订阅链接 (Clash/V2ray/Base64)"
               value={subUrl}
               onChange={(e) => setSubUrl(e.target.value)}
-              className="md:col-span-2 bg-slate-950/80 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500 font-mono"
+              className="md:col-span-2 bg-fx-bg rounded-lg px-3 py-2 text-xs text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40 font-mono"
             />
           </div>
 
@@ -736,14 +728,14 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
             <button
               type="button"
               onClick={() => setShowAddSub(false)}
-              className="px-3 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200"
+              className="px-3 py-1.5 rounded-lg text-xs text-fx-muted hover:text-fx-text"
             >
               取消
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white shadow"
+              className="px-5 py-1.5 rounded-lg bg-sky-500 hover:bg-cyan-400 text-xs font-semibold text-white shadow"
             >
               {isSubmitting ? '正在拉取...' : '立即拉取并聚合'}
             </button>
@@ -754,15 +746,15 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
       {/* Edit Subscription Modal */}
       {editingSub && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 max-w-lg w-full space-y-4 shadow-2xl">
+          <div className="bg-fx-elevated rounded-2xl p-5 max-w-lg w-full space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-                <Edit3 className="w-4 h-4 text-blue-400" />
+              <h3 className="text-sm font-bold text-fx-text flex items-center gap-2">
+                <Edit3 className="w-4 h-4 text-fx-accent" />
                 编辑订阅信息
               </h3>
               <button
                 onClick={() => setEditingSub(null)}
-                className="text-xs text-slate-500 hover:text-slate-300"
+                className="text-xs text-fx-muted hover:text-fx-text/90"
               >
                 ✕
               </button>
@@ -770,21 +762,21 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
             <div className="space-y-3">
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">订阅备注名称</label>
+                <label className="text-[11px] text-fx-muted block mb-1">订阅备注名称</label>
                 <input
                   type="text"
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-fx-bg rounded-lg px-3 py-2 text-xs text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                 />
               </div>
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">订阅链接 URL</label>
+                <label className="text-[11px] text-fx-muted block mb-1">订阅链接 URL</label>
                 <input
                   type="text"
                   value={editUrl}
                   onChange={(e) => setEditUrl(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500 font-mono"
+                  className="w-full bg-fx-bg rounded-lg px-3 py-2 text-xs text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40 font-mono"
                 />
               </div>
             </div>
@@ -792,13 +784,13 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
             <div className="flex justify-end gap-2 pt-2">
               <button
                 onClick={() => setEditingSub(null)}
-                className="px-3 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200"
+                className="px-3 py-1.5 rounded-lg text-xs text-fx-muted hover:text-fx-text"
               >
                 取消
               </button>
               <button
                 onClick={handleSaveEdit}
-                className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white shadow"
+                className="px-4 py-1.5 rounded-lg bg-sky-500 hover:bg-cyan-400 text-xs font-semibold text-white shadow"
               >
                 保存修改
               </button>
@@ -812,31 +804,31 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <form
             onSubmit={handleImportLinks}
-            className="bg-slate-900 border border-slate-800 rounded-2xl p-5 max-w-lg w-full space-y-4 shadow-2xl"
+            className="bg-fx-elevated rounded-2xl p-5 max-w-lg w-full space-y-4"
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-                <Link2 className="w-4 h-4 text-blue-400" />
+              <h3 className="text-sm font-bold text-fx-text flex items-center gap-2">
+                <Link2 className="w-4 h-4 text-fx-accent" />
                 手动导入节点分享链接
               </h3>
               <button
                 type="button"
                 onClick={() => setShowImportModal(false)}
-                className="text-xs text-slate-500 hover:text-slate-300"
+                className="text-xs text-fx-muted hover:text-fx-text/90"
               >
                 ✕
               </button>
             </div>
 
             {importError && (
-              <div className="text-xs text-rose-400 bg-rose-500/10 p-2.5 rounded-lg border border-rose-500/20">
+              <div className="text-xs text-rose-400 bg-rose-500/10 p-2.5 rounded-lg">
                 {importError}
               </div>
             )}
 
             <div className="space-y-3">
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">
+                <label className="text-[11px] text-fx-muted block mb-1">
                   分组/来源名称 (选填)
                 </label>
                 <input
@@ -844,19 +836,19 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                   placeholder="手动导入节点"
                   value={importName}
                   onChange={(e) => setImportName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-fx-bg rounded-lg px-3 py-2 text-xs text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-[11px] text-slate-400 block">
+                  <label className="text-[11px] text-fx-muted block">
                     节点链接或 Base64 文本 (每行一条)
                   </label>
                   <button
                     type="button"
                     onClick={handlePasteClipboard}
-                    className="flex items-center gap-1 text-[11px] text-blue-400 hover:text-blue-300"
+                    className="flex items-center gap-1 text-[11px] text-fx-accent hover:text-fx-accent"
                   >
                     <Clipboard className="w-3 h-3" />
                     <span>从剪贴板粘贴</span>
@@ -867,7 +859,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                   placeholder={`支持 vmess://, vless://, ss://, trojan://, hysteria2:// (hy2://)\n每行一条链接，或直接粘贴整段 Base64 订阅文本...`}
                   value={importText}
                   onChange={(e) => setImportText(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 font-mono focus:outline-none focus:border-blue-500 resize-none leading-relaxed"
+                  className="w-full bg-fx-bg rounded-lg p-3 text-xs text-fx-text font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40 resize-none leading-relaxed"
                 />
               </div>
             </div>
@@ -876,14 +868,14 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               <button
                 type="button"
                 onClick={() => setShowImportModal(false)}
-                className="px-3 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200"
+                className="px-3 py-1.5 rounded-lg text-xs text-fx-muted hover:text-fx-text"
               >
                 取消
               </button>
               <button
                 type="submit"
                 disabled={isImporting || !importText.trim()}
-                className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-xs font-semibold text-white shadow"
+                className="px-4 py-1.5 rounded-lg bg-sky-500 hover:bg-cyan-400 disabled:opacity-50 text-xs font-semibold text-white shadow"
               >
                 {isImporting ? '正在解析导入...' : '确认导入节点'}
               </button>
@@ -897,24 +889,24 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <form
             onSubmit={handleSaveNode}
-            className="bg-slate-900 border border-slate-800 rounded-2xl p-5 max-w-xl w-full space-y-4 shadow-2xl max-h-[90vh] flex flex-col"
+            className="bg-fx-elevated rounded-2xl p-5 max-w-xl w-full space-y-4 max-h-[90vh] flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 {isCreatingNewNode ? (
                   <PlusCircle className="w-4 h-4 text-amber-400" />
                 ) : (
-                  <Edit3 className="w-4 h-4 text-blue-400" />
+                  <Edit3 className="w-4 h-4 text-fx-accent" />
                 )}
-                <h3 className="text-sm font-bold text-slate-200">
+                <h3 className="text-sm font-bold text-fx-text">
                   {isCreatingNewNode ? '新增自建代理节点' : '编辑代理节点配置'}
                 </h3>
-                <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-fx-accent-dim text-fx-accent">
                   {nodeForm.type}
                 </span>
                 {isCreatingNewNode && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300">
                     本地独立 · 永不被订阅同步覆盖
                   </span>
                 )}
@@ -925,7 +917,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                   setEditingNode(null)
                   setIsCreatingNewNode(false)
                 }}
-                className="text-xs text-slate-500 hover:text-slate-300"
+                className="text-xs text-fx-muted hover:text-fx-text/90"
               >
                 ✕
               </button>
@@ -933,7 +925,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
             {/* Error banner */}
             {editNodeError && (
-              <div className="text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-lg">
+              <div className="text-xs text-rose-400 bg-rose-500/10 p-2.5 rounded-lg">
                 {editNodeError}
               </div>
             )}
@@ -942,12 +934,12 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
             <div className="overflow-y-auto space-y-3.5 pr-1 text-xs">
               {/* Node Name */}
               <div>
-                <label className="text-[11px] font-medium text-slate-400 block mb-1">节点备注名称</label>
+                <label className="text-[11px] font-medium text-fx-muted block mb-1">节点备注名称</label>
                 <input
                   type="text"
                   value={nodeForm.name}
                   onChange={(e) => setNodeForm({ ...nodeForm, name: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                   placeholder="节点名称"
                 />
               </div>
@@ -955,11 +947,11 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               {/* Protocol & Network */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">协议类型 (Protocol)</label>
+                  <label className="text-[11px] font-medium text-fx-muted block mb-1">协议类型 (Protocol)</label>
                   <select
                     value={nodeForm.type}
                     onChange={(e) => setNodeForm({ ...nodeForm, type: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-blue-500 uppercase font-mono text-[11px]"
+                    className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40 uppercase font-mono text-[11px]"
                   >
                     <option value="ss">Shadowsocks (SS)</option>
                     <option value="vmess">VMess</option>
@@ -971,11 +963,11 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">传输方式 (Network)</label>
+                  <label className="text-[11px] font-medium text-fx-muted block mb-1">传输方式 (Network)</label>
                   <select
                     value={nodeForm.network}
                     onChange={(e) => setNodeForm({ ...nodeForm, network: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-blue-500 uppercase font-mono text-[11px]"
+                    className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40 uppercase font-mono text-[11px]"
                   >
                     <option value="tcp">TCP</option>
                     <option value="ws">WebSocket (WS)</option>
@@ -988,24 +980,24 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               {/* Server & Port */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2">
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">服务器地址 (Domain / IP)</label>
+                  <label className="text-[11px] font-medium text-fx-muted block mb-1">服务器地址 (Domain / IP)</label>
                   <input
                     type="text"
                     value={nodeForm.server}
                     onChange={(e) => setNodeForm({ ...nodeForm, server: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                     placeholder="example.com 或 1.2.3.4"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">端口 (Port)</label>
+                  <label className="text-[11px] font-medium text-fx-muted block mb-1">端口 (Port)</label>
                   <input
                     type="number"
                     min={1}
                     max={65535}
                     value={nodeForm.port}
                     onChange={(e) => setNodeForm({ ...nodeForm, port: parseInt(e.target.value) || 0 })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                     placeholder="443"
                   />
                 </div>
@@ -1013,14 +1005,14 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
               {/* Password or UUID */}
               <div>
-                <label className="text-[11px] font-medium text-slate-400 block mb-1">
+                <label className="text-[11px] font-medium text-fx-muted block mb-1">
                   {['vmess', 'vless'].includes(nodeForm.type.toLowerCase()) ? 'UUID / 用户标识' : '连接密码 (Password / Secret)'}
                 </label>
                 <input
                   type="text"
                   value={nodeForm.passwordOrUuid}
                   onChange={(e) => setNodeForm({ ...nodeForm, passwordOrUuid: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                  className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                   placeholder={['vmess', 'vless'].includes(nodeForm.type.toLowerCase()) ? 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' : '输入密码'}
                 />
               </div>
@@ -1028,12 +1020,12 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               {/* Cipher */}
               {['ss', 'vmess'].includes(nodeForm.type.toLowerCase()) && (
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">加密算法 (Cipher / Method)</label>
+                  <label className="text-[11px] font-medium text-fx-muted block mb-1">加密算法 (Cipher / Method)</label>
                   <input
                     type="text"
                     value={nodeForm.cipher}
                     onChange={(e) => setNodeForm({ ...nodeForm, cipher: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                     placeholder={nodeForm.type.toLowerCase() === 'vmess' ? 'auto, aes-128-gcm, chacha20-poly1305' : 'aes-256-gcm, chacha20-ietf-poly1305, 2022-blake3-aes-128-gcm'}
                   />
                 </div>
@@ -1047,19 +1039,19 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                     id="node-tls"
                     checked={nodeForm.tls}
                     onChange={(e) => setNodeForm({ ...nodeForm, tls: e.target.checked })}
-                    className="rounded bg-slate-950 border-slate-700 text-blue-600 focus:ring-0"
+                    className="rounded bg-fx-bg text-blue-600 focus:ring-0"
                   />
-                  <label htmlFor="node-tls" className="text-[11px] font-medium text-slate-300 cursor-pointer">
+                  <label htmlFor="node-tls" className="text-[11px] font-medium text-fx-text/90 cursor-pointer">
                     启用 TLS 加密
                   </label>
                 </div>
                 <div className="col-span-2">
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">SNI 域名伪装 (ServerName)</label>
+                  <label className="text-[11px] font-medium text-fx-muted block mb-1">SNI 域名伪装 (ServerName)</label>
                   <input
                     type="text"
                     value={nodeForm.sni}
                     onChange={(e) => setNodeForm({ ...nodeForm, sni: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                     placeholder="tls sni (如: cloudflare.com)"
                   />
                 </div>
@@ -1068,23 +1060,23 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               {/* WS / HTTP Path */}
               {['ws', 'h2'].includes(nodeForm.network.toLowerCase()) && (
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">路径 (Path)</label>
+                  <label className="text-[11px] font-medium text-fx-muted block mb-1">路径 (Path)</label>
                   <input
                     type="text"
                     value={nodeForm.path}
                     onChange={(e) => setNodeForm({ ...nodeForm, path: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full bg-fx-bg rounded-lg px-3 py-2 text-fx-text font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
                     placeholder="/ 或 /ws"
                   />
                 </div>
               )}
 
               {/* Toggle Raw JSON mode */}
-              <div className="pt-2 border-t border-slate-800/80">
+              <div className="pt-2 fx-divider">
                 <button
                   type="button"
                   onClick={() => setNodeForm({ ...nodeForm, showRawJson: !nodeForm.showRawJson })}
-                  className="flex items-center gap-1.5 text-[11px] text-blue-400 hover:text-blue-300"
+                  className="flex items-center gap-1.5 text-[11px] text-fx-accent hover:text-fx-accent"
                 >
                   <Code2 className="w-3.5 h-3.5" />
                   <span>{nodeForm.showRawJson ? '收起高级原始 JSON 配置' : '展开高级原始 JSON 配置 (Mihomo 原生参数)'}</span>
@@ -1092,14 +1084,14 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
                 {nodeForm.showRawJson && (
                   <div className="mt-2 space-y-1">
-                    <div className="text-[10px] text-slate-500">
+                    <div className="text-[10px] text-fx-muted">
                       直接编辑 Mihomo 内核使用的底层原生配置对象。如果启用此项，将直接应用并覆盖上述参数：
                     </div>
                     <textarea
                       rows={6}
                       value={nodeForm.rawJson}
                       onChange={(e) => setNodeForm({ ...nodeForm, rawJson: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-[11px] text-slate-300 font-mono focus:outline-none focus:border-blue-500 leading-relaxed"
+                      className="w-full bg-fx-bg rounded-lg p-3 text-[11px] text-fx-text/90 font-mono focus:outline-none focus:ring-1 focus:ring-fx-accent/40 leading-relaxed"
                     />
                   </div>
                 )}
@@ -1107,21 +1099,21 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
             </div>
 
             {/* Footer */}
-            <div className="flex justify-end gap-2 pt-3 border-t border-slate-800/80">
+            <div className="flex justify-end gap-2 pt-3 fx-divider">
               <button
                 type="button"
                 onClick={() => {
                   setEditingNode(null)
                   setIsCreatingNewNode(false)
                 }}
-                className="px-3.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200"
+                className="px-3.5 py-1.5 rounded-lg text-xs text-fx-muted hover:text-fx-text"
               >
                 取消
               </button>
               <button
                 type="submit"
                 disabled={isSavingNode}
-                className="px-5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-xs font-semibold text-white shadow flex items-center gap-1.5"
+                className="px-5 py-1.5 rounded-lg bg-sky-500 hover:bg-cyan-400 disabled:opacity-50 text-xs font-semibold text-white shadow flex items-center gap-1.5"
               >
                 {isSavingNode && <RotateCw className="w-3 h-3 animate-spin" />}
                 <span>
@@ -1141,17 +1133,17 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
       {/* Multi-Subscription Management Cards */}
       {subscriptions.length > 0 && (
-        <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
+        <div className="p-4 rounded-2xl bg-fx-elevated space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-blue-400" />
-              <span className="text-xs font-bold text-slate-200">
+              <Layers className="w-4 h-4 text-fx-accent" />
+              <span className="text-xs font-bold text-fx-text">
                 多订阅管理 ({subscriptions.length} 个订阅，{activeSubsCount} 个启用)
               </span>
             </div>
             <button
               onClick={() => setIsSubsCollapsed(!isSubsCollapsed)}
-              className="text-slate-400 hover:text-slate-200 text-xs flex items-center gap-1"
+              className="text-fx-muted hover:text-fx-text text-xs flex items-center gap-1"
             >
               <span>{isSubsCollapsed ? '展开订阅列表' : '收起面板'}</span>
               {isSubsCollapsed ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
@@ -1171,24 +1163,18 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                 return (
                   <div
                     key={sub.id}
-                    className={`p-3.5 rounded-xl border transition ${
-                      sub.enabled
-                        ? 'bg-slate-900/80 border-slate-800'
-                        : 'bg-slate-950/40 border-slate-900 opacity-60'
-                    }`}
+                    className={`p-3.5 rounded-xl transition ${ sub.enabled ? 'bg-fx-surface ' : 'bg-fx-bg border-slate-900 opacity-60' }`}
                   >
                     {/* Header: Name, enable toggle, buttons */}
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0">
                         <button
                           onClick={() => handleToggleSub(sub.id, sub.enabled)}
-                          className={`w-3 h-3 rounded-full transition flex-shrink-0 ${
-                            sub.enabled ? 'bg-emerald-400 ring-2 ring-emerald-500/20' : 'bg-slate-600'
-                          }`}
+                          className={`w-3 h-3 rounded-full transition flex-shrink-0 ${ sub.enabled ? 'bg-fx-accent ring-2 ring-fx-accent/20' : 'bg-fx-muted' }`}
                           title={sub.enabled ? '点击禁用该订阅' : '点击启用该订阅'}
                         />
-                        <span className="text-xs font-bold text-slate-100 truncate">{sub.name}</span>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono flex-shrink-0">
+                        <span className="text-xs font-bold text-fx-text truncate">{sub.name}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-fx-surface text-fx-muted font-mono flex-shrink-0">
                           {sub.nodeCount} 节点
                         </span>
                       </div>
@@ -1198,21 +1184,21 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                           onClick={() => handleUpdateSub(sub.id)}
                           disabled={isUpdating}
                           title="立即同步最新节点"
-                          className="p-1 rounded text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition"
+                          className="p-1 rounded text-fx-muted hover:text-fx-accent hover:bg-fx-surface transition"
                         >
-                          <RotateCw className={`w-3.5 h-3.5 ${isUpdating ? 'animate-spin text-blue-400' : ''}`} />
+                          <RotateCw className={`w-3.5 h-3.5 ${isUpdating ? 'animate-spin text-fx-accent' : ''}`} />
                         </button>
                         <button
                           onClick={() => handleOpenEdit(sub)}
                           title="编辑名称或链接"
-                          className="p-1 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+                          className="p-1 rounded text-fx-muted hover:text-fx-text hover:bg-fx-surface transition"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDeleteSub(sub.id)}
                           title="删除订阅"
-                          className="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition"
+                          className="p-1 rounded text-fx-muted hover:text-rose-400 hover:bg-fx-surface transition"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -1222,24 +1208,18 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                     {/* Quota Progress Bar (if userInfo available) */}
                     {totalBytes > 0 ? (
                       <div className="mt-2.5 space-y-1">
-                        <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                        <div className="flex items-center justify-between text-[10px] text-fx-muted font-mono">
                           <span className="flex items-center gap-1">
-                            <HardDrive className="w-2.5 h-2.5 text-blue-400" />
+                            <HardDrive className="w-2.5 h-2.5 text-fx-accent" />
                             已用: {formatBytes(usedBytes)} / {formatBytes(totalBytes)}
                           </span>
-                          <span className={percent > 90 ? 'text-rose-400' : 'text-slate-400'}>
+                          <span className={percent > 90 ? 'text-rose-400' : 'text-fx-muted'}>
                             {percent}%
                           </span>
                         </div>
-                        <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-1.5 w-full bg-fx-surface rounded-full overflow-hidden">
                           <div
-                            className={`h-full rounded-full transition-all duration-300 ${
-                              percent > 90
-                                ? 'bg-rose-500'
-                                : percent > 75
-                                  ? 'bg-amber-500'
-                                  : 'bg-blue-500'
-                            }`}
+                            className={`h-full rounded-full transition-all duration-300 ${ percent > 90 ? 'bg-rose-500' : percent > 75 ? 'bg-amber-500' : 'bg-blue-500' }`}
                             style={{ width: `${percent}%` }}
                           />
                         </div>
@@ -1247,13 +1227,13 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                     ) : null}
 
                     {/* Metadata Footer: Expire date & Last sync */}
-                    <div className="flex items-center justify-between gap-2 mt-2 pt-2 border-t border-slate-800/60 text-[10px] text-slate-500">
+                    <div className="flex items-center justify-between gap-2 mt-2 pt-2 fx-divider text-[10px] text-fx-muted">
                       <span className="flex items-center gap-1">
-                        <Clock className="w-2.5 h-2.5 text-slate-600" />
+                        <Clock className="w-2.5 h-2.5 text-fx-muted" />
                         同步于: {formatDateTime(sub.updatedAt)}
                       </span>
                       {sub.userInfo?.expire ? (
-                        <span className="flex items-center gap-1 text-slate-400">
+                        <span className="flex items-center gap-1 text-fx-muted">
                           <Calendar className="w-2.5 h-2.5 text-amber-500" />
                           到期: {formatDate(sub.userInfo.expire)}
                         </span>
@@ -1269,14 +1249,10 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
       {/* Subscription & Manual Filter Tabs */}
       {(subscriptions.length > 0 || manualNodesCount > 0) && (
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-800/60 scrollbar-none">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           <button
             onClick={() => setSelectedSubFilter('ALL')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition ${
-              selectedSubFilter === 'ALL'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition ${ selectedSubFilter === 'ALL' ? 'bg-sky-500 text-white shadow-sm' : 'bg-fx-elevated text-fx-muted hover:text-fx-text hover:bg-fx-surface' }`}
           >
             全部节点 ({(config.nodes || []).length})
           </button>
@@ -1284,11 +1260,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
           {/* Dedicated Manual Nodes Management Tab */}
           <button
             onClick={() => setSelectedSubFilter('MANUAL')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition ${
-              selectedSubFilter === 'MANUAL'
-                ? 'bg-amber-600 text-white shadow-sm'
-                : 'bg-slate-900/60 text-amber-400/80 hover:text-amber-300 hover:bg-slate-800'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition ${ selectedSubFilter === 'MANUAL' ? 'bg-amber-600 text-white shadow-sm' : 'bg-fx-elevated text-amber-400/80 hover:text-amber-300 hover:bg-fx-surface' }`}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
             <span>📌 本地手动管理</span>
@@ -1302,16 +1274,10 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               <button
                 key={sub.id}
                 onClick={() => setSelectedSubFilter(sub.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition ${
-                  isSelected
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition ${ isSelected ? 'bg-sky-500 text-white shadow-sm' : 'bg-fx-elevated text-fx-muted hover:text-fx-text hover:bg-fx-surface' }`}
               >
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    sub.enabled ? 'bg-emerald-400' : 'bg-slate-500'
-                  }`}
+                  className={`w-1.5 h-1.5 rounded-full ${ sub.enabled ? 'bg-fx-accent' : 'bg-fx-muted' }`}
                 />
                 <span>{sub.name}</span>
                 <span className="text-[10px] opacity-75 font-mono">({count})</span>
@@ -1323,7 +1289,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
       {/* Manual Management Active Notification Banner */}
       {selectedSubFilter === 'MANUAL' && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-amber-500/10 text-xs text-amber-300">
           <div className="flex items-center gap-2">
             <span className="text-base">📌</span>
             <span>
@@ -1332,7 +1298,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
           </div>
           <button
             onClick={handleOpenAddManualNode}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/30 transition text-xs font-semibold shrink-0"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 transition text-xs font-semibold shrink-0"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>自建新节点</span>
@@ -1343,13 +1309,13 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
       {/* Search & Tool Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-fx-muted" />
           <input
             type="text"
             placeholder="搜索节点名称、协议或服务器地址..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-900/40 border border-slate-800/80 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+            className="w-full pl-10 pr-4 py-2 bg-fx-elevated rounded-xl text-xs text-fx-text placeholder:text-fx-muted focus:outline-none focus:ring-1 focus:ring-fx-accent/40 transition"
           />
         </div>
 
@@ -1358,17 +1324,13 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
           <button
             type="button"
             onClick={toggleMaskServerInfo}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition ${
-              maskServerInfo
-                ? 'bg-amber-500/10 text-amber-300 border-amber-500/30 hover:bg-amber-500/20'
-                : 'bg-slate-900/60 text-slate-300 border-slate-800/80 hover:bg-slate-800'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium transition ${ maskServerInfo ? 'bg-amber-500/10 text-amber-300 hover:bg-amber-500/20' : 'bg-fx-elevated text-fx-text/90 hover:bg-fx-surface' }`}
             title={maskServerInfo ? '当前已对 IP 与端口进行脱敏隐藏，点击显示明文' : '当前正在显示明文 IP 与端口，点击开启脱敏隐藏'}
           >
             {maskServerInfo ? (
               <EyeOff className="w-3.5 h-3.5 text-amber-400" />
             ) : (
-              <Eye className="w-3.5 h-3.5 text-emerald-400" />
+              <Eye className="w-3.5 h-3.5 text-fx-accent" />
             )}
             <span>{maskServerInfo ? 'IP/端口已脱敏' : '明文显示'}</span>
           </button>
@@ -1378,7 +1340,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
             aria-label="节点排序"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value === 'delay' ? 'delay' : 'default')}
-            className="bg-slate-900/60 border border-slate-800/80 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-blue-500"
+            className="bg-fx-elevated rounded-xl px-3 py-2 text-xs text-fx-text/90 focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
           >
             <option value="default">默认顺序</option>
             <option value="delay">按延迟排序</option>
@@ -1388,10 +1350,10 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
 
       {/* Nodes Grid */}
       {filteredNodes.length === 0 ? (
-        <div className="p-12 text-center rounded-2xl bg-slate-900/20 border border-slate-800/50">
-          <Server className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-          <div className="text-sm font-semibold text-slate-300">暂无代理节点</div>
-          <div className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+        <div className="p-12 text-center rounded-2xl bg-fx-elevated/20 /50">
+          <Server className="w-10 h-10 text-fx-muted mx-auto mb-3" />
+          <div className="text-sm font-semibold text-fx-text/90">暂无代理节点</div>
+          <div className="text-xs text-fx-muted mt-1 max-w-sm mx-auto">
             {subscriptions.length === 0 && manualNodesCount === 0
               ? '点击上方「添加订阅」添加机场订阅，或点击「自建新节点」/「导入分享链接」添加本地节点。'
               : '当前筛选条件下没有节点，或订阅已被禁用。请在上方检查订阅状态。'}
@@ -1410,24 +1372,20 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
               <div
                 key={node.name}
                 onClick={() => handleSelectNode(node.name)}
-                className={`relative group cursor-pointer p-4 rounded-2xl border transition-all duration-200 select-none ${
-                  isSelected
-                    ? 'bg-blue-600/10 border-blue-500 shadow-md shadow-blue-500/5 ring-1 ring-blue-500/30'
-                    : 'bg-slate-900/50 border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/80'
-                }`}
+                className={`relative group cursor-pointer p-4 rounded-2xl transition-all duration-200 select-none ${isSelected ? 'bg-fx-accent-dim shadow-frost' : 'bg-fx-elevated hover:bg-fx-surface'}`}
               >
                 {/* Top protocol & delay */}
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-slate-800/80 text-slate-400 border border-slate-700/60">
+                    <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-fx-surface text-fx-muted">
                       {node.type}
                     </span>
                     {isManualNode ? (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 truncate max-w-[120px]">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 truncate max-w-[120px]">
                         📌 本地手动
                       </span>
                     ) : node.subName ? (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20 truncate max-w-[120px]">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-fx-accent-dim text-fx-accent truncate max-w-[120px]">
                         {node.subName}
                       </span>
                     ) : null}
@@ -1435,7 +1393,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={(e) => handleTestSingle(e, node.name)}
-                      className="p-1 rounded hover:bg-slate-800 text-slate-500 hover:text-amber-400 transition"
+                      className="p-1 rounded hover:bg-fx-surface text-fx-muted hover:text-amber-400 transition"
                       title="测速该节点"
                       aria-label={`测速 ${node.name}`}
                     >
@@ -1446,7 +1404,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                         e.stopPropagation()
                         handleStartEditNode(node)
                       }}
-                      className="p-1 rounded hover:bg-slate-800 text-slate-500 hover:text-blue-400 transition"
+                      className="p-1 rounded hover:bg-fx-surface text-fx-muted hover:text-fx-accent transition"
                       title="编辑节点配置"
                       aria-label={`编辑 ${node.name}`}
                     >
@@ -1457,7 +1415,7 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                         e.stopPropagation()
                         handleDeleteNode(node.name)
                       }}
-                      className="p-1 rounded hover:bg-slate-800 text-slate-500 hover:text-rose-400 transition"
+                      className="p-1 rounded hover:bg-fx-surface text-fx-muted hover:text-rose-400 transition"
                       title="删除该节点"
                       aria-label={`删除 ${node.name}`}
                     >
@@ -1470,14 +1428,14 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                 </div>
 
                 {/* Node name */}
-                <div className="text-sm font-semibold text-slate-200 truncate pr-6" title={node.name}>
+                <div className="text-sm font-semibold text-fx-text truncate pr-6" title={node.name}>
                   {node.name}
                 </div>
 
                 {/* Server/port info if available */}
                 {node.server && (
                   <div
-                    className="text-[11px] text-slate-500 truncate mt-1 font-mono"
+                    className="text-[11px] text-fx-muted truncate mt-1 font-mono"
                     title={
                       maskServerInfo
                         ? 'IP 与端口已脱敏隐藏（可在工具栏切换显示明文）'
@@ -1493,15 +1451,15 @@ export const Proxies: React.FC<ProxiesProps> = ({ config, onUpdateConfig }) => {
                 {/* Node cumulative traffic */}
                 {nodeTraffic[node.name] &&
                   (nodeTraffic[node.name].upload > 0 || nodeTraffic[node.name].download > 0) && (
-                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono text-slate-400">
-                      <span className="text-blue-400">↑ {formatBytes(nodeTraffic[node.name].upload)}</span>
-                      <span className="text-emerald-400">↓ {formatBytes(nodeTraffic[node.name].download)}</span>
+                    <div className="flex items-center gap-2 mt-2 pt-2 fx-divider text-[10px] font-mono text-fx-muted">
+                      <span className="text-fx-accent">↑ {formatBytes(nodeTraffic[node.name].upload)}</span>
+                      <span className="text-fx-accent">↓ {formatBytes(nodeTraffic[node.name].download)}</span>
                     </div>
                   )}
 
                 {/* Selected Checkmark */}
                 {isSelected && (
-                  <div className="absolute right-3.5 bottom-3.5 text-blue-400">
+                  <div className="absolute right-3.5 bottom-3.5 text-fx-accent">
                     <CheckCircle2 className="w-5 h-5 fill-blue-500/20" />
                   </div>
                 )}

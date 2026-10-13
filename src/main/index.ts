@@ -22,8 +22,17 @@ import { SystemServiceManager } from './system-service'
 import { LinkParser } from './link-parser'
 import { LogManager } from './log-manager'
 import { installDataDir } from './app-data-dir'
+import {
+  applyPreviewInstanceIdentity,
+  isPreviewInstance,
+  previewAppUserModelId,
+  previewWindowTitle
+} from './preview-mode'
 import { endListener, listTcpListeners, killAllowed, type PortOccupant } from './port-occupancy'
 import type { AppConfig, ProxyNode, SubscriptionProfile } from '../renderer/src/types'
+
+// Separate Electron identity for preview before the single-instance lock.
+applyPreviewInstanceIdentity()
 
 // Long-term running stability: protect proxy state against unexpected crashes
 process.on('uncaughtException', (err) => {
@@ -424,7 +433,8 @@ function createWindow(): void {
     show: false,
     frame: false,
     titleBarStyle: 'hidden',
-    backgroundColor: '#0b0f19',
+    title: previewWindowTitle(),
+    backgroundColor: '#04070c',
     autoHideMenuBar: true,
     icon: winIcon,
     webPreferences: {
@@ -496,7 +506,10 @@ if (!gotTheLock) {
     }
   })
 
-  electronApp.setAppUserModelId('com.draftone.app')
+  electronApp.setAppUserModelId(previewAppUserModelId())
+  if (isPreviewInstance()) {
+    console.log('[App] Preview instance — separate userData/AUMID; can run beside an installed build.')
+  }
 
   app.whenReady().then(async () => {
 
@@ -600,6 +613,10 @@ if (!gotTheLock) {
     // Register IPC Handlers
     ipcMain.handle('app:get-version', () => {
       return app.getVersion()
+    })
+
+    ipcMain.handle('app:is-preview', () => {
+      return isPreviewInstance()
     })
 
     ipcMain.handle('app:get-config', () => {

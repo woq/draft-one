@@ -5,6 +5,7 @@ import { generateMihomoConfig, insertMissingDirectRules, arrangeRuleSections } f
 import { parseSchtasksCsv } from '../src/main/schtasks-csv.ts'
 import { buildLogonTaskXml, describeLogonTaskXml } from '../src/main/logon-task-xml.ts'
 import { LinkParser } from '../src/main/link-parser.ts'
+import { resolvePreviewMode } from '../src/main/preview-mode.ts'
 
 const baseConfig = {
   mixedPort: 7890,
@@ -176,4 +177,43 @@ test('LinkParser turns hy2 links into a hysteria2 outbound', () => {
   assert.equal(nodes[0].type, 'hysteria2')
   assert.equal(nodes[0].raw.type, 'hysteria2')
   assert.equal(nodes[0].raw.server, '3.3.3.3')
+})
+
+test('resolvePreviewMode defaults for unpack/dev and respects flags', () => {
+  assert.equal(
+    resolvePreviewMode({ argv: [], isPackaged: false, execPath: 'C:\\dev\\electron.exe' }),
+    true
+  )
+  assert.equal(
+    resolvePreviewMode({
+      argv: [],
+      isPackaged: true,
+      execPath: 'D:\\Code\\draft-one\\dist\\win-unpacked\\draft-one.exe'
+    }),
+    true
+  )
+  assert.equal(
+    resolvePreviewMode({
+      argv: [],
+      isPackaged: true,
+      execPath: 'C:\\Program Files\\draft-one\\draft-one.exe'
+    }),
+    false
+  )
+  assert.equal(
+    resolvePreviewMode({
+      argv: ['--preview'],
+      isPackaged: true,
+      execPath: 'C:\\Program Files\\draft-one\\draft-one.exe'
+    }),
+    true
+  )
+  assert.equal(
+    resolvePreviewMode({
+      argv: ['--no-preview'],
+      isPackaged: false,
+      execPath: 'C:\\dev\\electron.exe'
+    }),
+    false
+  )
 })

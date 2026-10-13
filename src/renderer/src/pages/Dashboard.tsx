@@ -195,32 +195,32 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const activeNodeObj = (config.nodes || []).find((n) => n.name === config.activeNode)
 
   return (
-    <div className="space-y-6">
-      {/* Proxy Warning Toast/Bar */}
+    <div className="space-y-7">
       {proxyWarning && (
-        <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs shadow">
+        <div className="flex items-center justify-between p-3.5 rounded-2xl bg-amber-500/12 text-amber-200 text-xs">
           <div className="flex items-center gap-2.5">
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
             <span>{proxyWarning}</span>
           </div>
           <button
+            type="button"
             onClick={() => setProxyWarning(null)}
             className="text-amber-400 hover:text-amber-200 text-xs px-2"
+            aria-label="关闭警告"
           >
             ✕
           </button>
         </div>
       )}
 
-      {/* Core status alert if binary is missing */}
       {!coreStatus.binaryExists && (
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
+        <div className="flex items-center gap-3 p-4 rounded-2xl bg-amber-500/10 text-amber-200">
           <AlertTriangle className="w-5 h-5 flex-shrink-0" />
           <div className="text-sm">
             <span className="font-semibold">未检测到 mihomo 内核：</span> 请将 Windows 版本的{' '}
-            <code className="px-1.5 py-0.5 rounded bg-amber-950 text-amber-200">mihomo.exe</code>{' '}
+            <code className="px-1.5 py-0.5 rounded-lg bg-amber-950/60 text-amber-200 font-mono">mihomo.exe</code>{' '}
             放置于项目根目录或{' '}
-            <code className="px-1.5 py-0.5 rounded bg-amber-950 text-amber-200">
+            <code className="px-1.5 py-0.5 rounded-lg bg-amber-950/60 text-amber-200 font-mono">
               resources/binaries/
             </code>{' '}
             目录下。
@@ -228,109 +228,88 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       )}
 
-      {/* Top Status & Traffic Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Core Status Card (Status + Uptime only) */}
-        <div className="bg-slate-900/60 backdrop-blur border border-slate-800/80 rounded-2xl p-5 relative overflow-hidden shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-medium text-slate-400">内核守护状态</span>
-            <div
-              className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                coreStatus.running
-                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                  : 'bg-slate-800 text-slate-400'
-              }`}
-            >
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="fx-panel fx-glass-strong rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-5">
+            <span className="text-xs font-medium text-fx-muted tracking-wide">内核</span>
+            <div className={`fx-chip ${coreStatus.running ? 'fx-chip-ok' : 'fx-chip-muted'}`}>
               <div
                 className={`w-1.5 h-1.5 rounded-full ${
-                  coreStatus.running ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'
+                  coreStatus.running ? 'bg-fx-accent animate-pulse' : 'bg-fx-muted'
                 }`}
               />
               {coreStatus.running ? '运行中' : '未启动'}
             </div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-slate-100 font-mono">
-              {formatUptime(coreStatus.uptimeSec)}
-            </span>
+          <div className="text-4xl font-semibold text-fx-text font-mono tracking-tight leading-none">
+            {formatUptime(coreStatus.uptimeSec)}
           </div>
-          <div className="text-xs text-slate-500 mt-2 font-mono">
-            持续运行时间
-          </div>
+          <div className="text-xs text-fx-muted mt-3">运行时长</div>
         </div>
 
-        {/* Live Download Speed */}
-        <div className="bg-slate-900/60 backdrop-blur border border-slate-800/80 rounded-2xl p-5 relative overflow-hidden shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-medium text-slate-400">下行实时速率</span>
-            <ArrowDownCircle className="w-4 h-4 text-emerald-400" />
+        <div className="fx-panel fx-glass-strong rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-5">
+            <span className="text-xs font-medium text-fx-muted tracking-wide">下行</span>
+            <ArrowDownCircle className="w-4 h-4 text-fx-accent" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-slate-100 font-mono">
+            <span className="text-4xl font-semibold text-fx-text font-mono tracking-tight leading-none">
               {formatSpeed(traffic.speedDown).val}
             </span>
-            <span className="text-sm font-medium text-slate-400 font-mono">
+            <span className="text-sm font-medium text-fx-muted font-mono">
               {formatSpeed(traffic.speedDown).unit}
             </span>
           </div>
-          <div className="text-xs text-slate-500 mt-2 font-mono">
-            累计下行: <span className="text-emerald-400 font-semibold">{formatBytes(traffic.totalDownload)}</span>
+          <div className="text-xs text-fx-muted mt-3 font-mono">
+            累计 <span className="text-fx-accent">{formatBytes(traffic.totalDownload)}</span>
           </div>
         </div>
 
-        {/* Live Upload Speed */}
-        <div className="bg-slate-900/60 backdrop-blur border border-slate-800/80 rounded-2xl p-5 relative overflow-hidden shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-medium text-slate-400">上行实时速率</span>
-            <ArrowUpCircle className="w-4 h-4 text-blue-400" />
+        <div className="fx-panel fx-glass-strong rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-5">
+            <span className="text-xs font-medium text-fx-muted tracking-wide">上行</span>
+            <ArrowUpCircle className="w-4 h-4 text-fx-accent" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-slate-100 font-mono">
+            <span className="text-4xl font-semibold text-fx-text font-mono tracking-tight leading-none">
               {formatSpeed(traffic.speedUp).val}
             </span>
-            <span className="text-sm font-medium text-slate-400 font-mono">
+            <span className="text-sm font-medium text-fx-muted font-mono">
               {formatSpeed(traffic.speedUp).unit}
             </span>
           </div>
-          <div className="text-xs text-slate-500 mt-2 font-mono">
-            累计上行: <span className="text-blue-400 font-semibold">{formatBytes(traffic.totalUpload)}</span>
+          <div className="text-xs text-fx-muted mt-3 font-mono">
+            累计 <span className="text-fx-accent">{formatBytes(traffic.totalUpload)}</span>
           </div>
         </div>
       </div>
 
-      {/* Active Node Card (Node-Centric Core) */}
-      <div className="bg-gradient-to-r from-blue-950/40 via-slate-900/60 to-slate-900/60 border border-blue-500/20 rounded-2xl p-5 shadow-xl space-y-4">
+      <div className="fx-panel fx-glass-strong rounded-2xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Server className="w-5 h-5 text-blue-400" />
-            <span className="font-semibold text-slate-100 text-sm">
-              当前出站代理节点 (Active Node)
-            </span>
+            <Server className="w-5 h-5 text-fx-accent" />
+            <span className="font-semibold text-fx-text text-sm">当前节点</span>
           </div>
           <button
+            type="button"
             onClick={onNavigateToProxies}
-            className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 font-medium transition"
+            className="flex items-center gap-1 text-xs text-fx-accent hover:text-sky-200 font-medium transition duration-fx"
           >
-            <span>管理与选择节点</span>
+            <span>管理节点</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2.5">
-              <span className="text-base font-bold text-slate-100">
-                {config.activeNode || '未选择节点 (直连)'}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-fx-surface">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="text-lg font-semibold text-fx-text truncate">
+              {config.activeNode || '未选择（直连）'}
+            </span>
+            {activeNodeObj?.type && (
+              <span className="fx-chip fx-chip-accent font-mono uppercase text-[10px] shrink-0">
+                {activeNodeObj.type}
               </span>
-              {activeNodeObj?.type && (
-                <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                  {activeNodeObj.type}
-                </span>
-              )}
-            </div>
-            <div className="text-xs text-slate-400">
-              所有在路由表中判定为 PROXY / 兜底 MATCH 的流量均由此节点转发出站
-            </div>
+            )}
           </div>
 
           <div className="flex items-center gap-3">
@@ -338,12 +317,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <div className="flex items-center gap-2">
                 {activeNodeDelay !== null && (
                   <span
-                    className={`text-xs font-mono px-2 py-1 rounded border flex items-center gap-1 ${
+                    className={`text-xs font-mono px-2 py-1 rounded-lg flex items-center gap-1 ${
                       activeNodeDelay < 0
-                        ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                        ? 'bg-fx-danger/10 text-fx-danger'
                         : activeNodeDelay < 300
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                          : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                          ? 'bg-fx-accent-dim text-fx-accent'
+                          : 'bg-amber-500/10 text-amber-300'
                     }`}
                   >
                     {activeNodeDelay < 0 ? (
@@ -358,20 +337,22 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   </span>
                 )}
                 <button
+                  type="button"
                   onClick={handlePingActiveNode}
                   disabled={isTestingActive}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition"
+                  className="fx-btn"
                   title="测速当前节点"
                 >
-                  <Zap className={`w-3.5 h-3.5 text-amber-400 ${isTestingActive ? 'animate-spin' : ''}`} />
+                  <Zap className={`w-3.5 h-3.5 text-amber-300 ${isTestingActive ? 'animate-spin' : ''}`} />
                   <span>{isTestingActive ? '测速中...' : '测速'}</span>
                 </button>
               </div>
             )}
             <button
+              type="button"
               onClick={handleReload}
               disabled={isReloading}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition"
+              className="fx-btn"
               title="热重载内核配置"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isReloading ? 'animate-spin' : ''}`} />
@@ -381,65 +362,56 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       </div>
 
-      {/* Mode Switches */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* System Proxy Card */}
-        <div className="bg-slate-900/60 hover:bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-lg transition flex items-start justify-between gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="fx-panel rounded-2xl p-5 transition duration-fx flex items-start justify-between gap-4 hover:bg-fx-surface">
           <div className="flex items-start gap-3.5 min-w-0 flex-1">
-            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 shrink-0 mt-0.5">
+            <div className="p-2.5 rounded-xl bg-fx-accent-dim text-fx-accent shrink-0 mt-0.5">
               <Globe className="w-5 h-5" />
             </div>
             <div className="space-y-1 min-w-0 pr-2">
-              <div className="font-semibold text-slate-100 text-sm flex items-center gap-2">
+              <div className="font-semibold text-fx-text text-sm flex items-center gap-2">
                 <span>系统代理</span>
-                <span className="text-[10px] font-mono text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded border border-purple-500/20">
-                  System Proxy
-                </span>
+                <span className="fx-chip fx-chip-accent font-mono text-[10px]">:{config.mixedPort}</span>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                接管 Windows 系统代理设置（端口: {config.mixedPort}）
-              </p>
+              <p className="text-xs text-fx-muted leading-relaxed">接管 Windows 系统代理</p>
               <div className="pt-1.5">
                 <button
+                  type="button"
                   onClick={handleOpenWindowsProxySettings}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 hover:text-blue-300 text-[11px] font-medium text-slate-300 border border-slate-700 hover:border-blue-500/40 transition shadow-sm"
+                  className="fx-btn"
                   title="一键打开 Windows 系统设置中的网络代理配置面板 (ms-settings:network-proxy)"
                 >
-                  <ExternalLink className="w-3 h-3 text-blue-400" />
+                  <ExternalLink className="w-3 h-3 text-fx-accent" />
                   <span>打开 Windows 代理设置</span>
                 </button>
               </div>
             </div>
           </div>
           <button
+            type="button"
+            aria-pressed={config.systemProxy}
+            aria-label="系统代理"
             onClick={handleToggleSystemProxy}
-            className={`w-12 h-6 shrink-0 flex items-center rounded-full p-1 duration-200 transition-colors cursor-pointer mt-1 ${
-              config.systemProxy ? 'bg-blue-600 shadow-md shadow-blue-600/30' : 'bg-slate-700'
-            }`}
+            className={`w-12 h-6 shrink-0 flex items-center rounded-full p-1 duration-fx transition-colors cursor-pointer mt-1 ${ config.systemProxy ? 'bg-sky-500' : 'bg-[rgba(100,116,139,0.45)]' }`}
           >
             <div
-              className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-200 ${
-                config.systemProxy ? 'translate-x-6' : 'translate-x-0'
-              }`}
+              className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-fx ${ config.systemProxy ? 'translate-x-6' : 'translate-x-0' }`}
             />
           </button>
         </div>
 
-        {/* TUN Mode Card */}
-        <div className="bg-slate-900/60 hover:bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-lg transition flex items-start justify-between gap-4">
+        <div className="fx-panel rounded-2xl p-5 transition duration-fx flex items-start justify-between gap-4 hover:bg-fx-surface">
           <div className="flex items-start gap-3.5 min-w-0 flex-1">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0 mt-0.5">
+            <div className="p-2.5 rounded-xl bg-fx-accent-dim text-fx-accent shrink-0 mt-0.5">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div className="space-y-1 min-w-0 pr-2">
-              <div className="font-semibold text-slate-100 text-sm flex items-center gap-2">
-                <span>TUN 虚拟网卡模式</span>
-                <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/15 px-1.5 py-0.5 rounded border border-emerald-500/20">
-                  Wintun
-                </span>
+              <div className="font-semibold text-fx-text text-sm flex items-center gap-2">
+                <span>TUN 模式</span>
+                <span className="fx-chip fx-chip-accent font-mono text-[10px]">Wintun</span>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                全局网络与非代理应用透明接管，原生防 DNS 泄漏。需要系统服务正在运行才会写入配置。
+              <p className="text-xs text-fx-muted leading-relaxed">
+                透明接管全局流量；需系统服务运行中才会写入配置。
               </p>
               {tunWarning && <p className="text-xs text-amber-300 leading-relaxed">{tunWarning}</p>}
             </div>
@@ -449,72 +421,64 @@ export const Dashboard: React.FC<DashboardProps> = ({
             aria-pressed={config.tunEnabled}
             aria-label="TUN 虚拟网卡模式"
             onClick={handleToggleTun}
-            className={`w-12 h-6 shrink-0 flex items-center rounded-full p-1 duration-200 transition-colors cursor-pointer mt-1 ${
-              config.tunEnabled ? 'bg-emerald-600 shadow-md shadow-emerald-600/30' : 'bg-slate-700'
+            className={`w-12 h-6 shrink-0 flex items-center rounded-full p-1 duration-fx transition-colors cursor-pointer mt-1 ${
+              config.tunEnabled ? 'bg-cyan-500' : 'bg-[rgba(100,116,139,0.45)]'
             }`}
           >
             <div
-              className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-200 ${
-                config.tunEnabled ? 'translate-x-6' : 'translate-x-0'
-              }`}
+              className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-fx ${ config.tunEnabled ? 'translate-x-6' : 'translate-x-0' }`}
             />
           </button>
         </div>
       </div>
 
-      {/* Autostart & Service Status Banner Card */}
-      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 shadow-lg space-y-3">
+      <div className="fx-panel rounded-2xl p-5 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div
-              className={`p-2.5 rounded-xl ${
-                autostartInfo.active ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-800 text-slate-500'
-              }`}
+              className={`p-2.5 rounded-xl ${ autostartInfo.active ? 'bg-fx-accent-dim text-fx-accent' : 'bg-fx-surface text-fx-muted' }`}
             >
               <Rocket className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-slate-100 text-sm">开机自启与系统守护</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-semibold text-fx-text text-sm">开机自启与系统守护</span>
                 {autostartInfo.highPriorityTask ? (
-                  <span className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    交互式登录任务 (已注册)
+                  <span className="fx-chip fx-chip-ok">
+                    <span className="w-1.5 h-1.5 rounded-full bg-fx-accent animate-pulse" />
+                    登录任务
                   </span>
                 ) : autostartInfo.systemService ? (
-                  <span className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Windows 服务模式 (运行中)
+                  <span className="fx-chip fx-chip-ok">
+                    <span className="w-1.5 h-1.5 rounded-full bg-fx-accent animate-pulse" />
+                    服务运行中
                   </span>
                 ) : autostartInfo.standard ? (
-                  <span className="text-[11px] font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                    常规登录自启 (已启用)
-                  </span>
+                  <span className="fx-chip fx-chip-accent">登录自启</span>
                 ) : (
-                  <span className="text-[11px] font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
-                    未配置开机自启
-                  </span>
+                  <span className="fx-chip fx-chip-muted">未配置</span>
                 )}
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-fx-muted mt-0.5">
                 {autostartInfo.highPriorityTask
-                  ? '已注册交互式登录任务。它在当前用户登录后的桌面里以最高权限启动托盘。'
+                  ? '登录后以最高权限启动托盘。'
                   : autostartInfo.systemService
-                    ? 'Windows 服务已在运行。服务拉起内核，登录后由服务在桌面创建托盘。'
+                    ? '服务拉起内核，登录后创建托盘。'
                     : autostartInfo.standard
-                      ? '已启用注册表登录项，登录后静默启动托盘。'
-                      : '建议在系统服务页注册 Windows 服务。服务负责开机内核，登录后再创建托盘。'}
+                      ? '注册表登录项已启用。'
+                      : '建议在系统服务页注册 Windows 服务。'}
               </p>
             </div>
           </div>
 
           <button
+            type="button"
             onClick={() => onNavigateToTab?.('service')}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 hover:border-slate-600 transition flex-shrink-0"
+            className="fx-btn-accent flex-shrink-0"
           >
-            <Wrench className="w-3.5 h-3.5 text-blue-400" />
+            <Wrench className="w-3.5 h-3.5" />
             <span>配置自启与系统服务</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronRight className="w-3.5 h-3.5 opacity-70" />
           </button>
         </div>
       </div>

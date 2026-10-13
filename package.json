@@ -1,7 +1,7 @@
 {
   "name": "draft-one",
-  "version": "0.1.0-dev.1",
-  "description": "Modern Windows Proxy Client with v2rayN-style Route Editor and Clash Verge UI",
+  "version": "2.0.0",
+  "description": "Modern Windows Proxy Client with node-centric routing and Soft Tonal UI",
   "type": "module",
   "main": "./out/main/index.js",
   "author": "draft-one",

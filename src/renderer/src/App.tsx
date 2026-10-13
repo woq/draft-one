@@ -41,19 +41,33 @@ const INITIAL_CONFIG: AppConfig = {
   rules: []
 }
 
+type TabId =
+  | 'dashboard'
+  | 'proxies'
+  | 'connections'
+  | 'routing'
+  | 'ruleproviders'
+  | 'dns'
+  | 'traffic'
+  | 'logs'
+  | 'service'
+  | 'settings'
+
+const NAV_ITEMS: { id: TabId; label: string; icon: React.ReactNode }[] = [
+  { id: 'dashboard', label: '控制面板', icon: <LayoutDashboard className="w-4 h-4" /> },
+  { id: 'proxies', label: '节点中心', icon: <Server className="w-4 h-4" /> },
+  { id: 'connections', label: '实时连接管理', icon: <Radio className="w-4 h-4" /> },
+  { id: 'traffic', label: '流量统计分析', icon: <Activity className="w-4 h-4" /> },
+  { id: 'routing', label: '路由分流规则', icon: <Route className="w-4 h-4" /> },
+  { id: 'ruleproviders', label: '规则库管理', icon: <Database className="w-4 h-4" /> },
+  { id: 'dns', label: 'DNS 策略分流', icon: <Globe2 className="w-4 h-4" /> },
+  { id: 'logs', label: '实时内核日志', icon: <Terminal className="w-4 h-4" /> },
+  { id: 'service', label: '系统服务与工具', icon: <Wrench className="w-4 h-4" /> },
+  { id: 'settings', label: '应用与内核设置', icon: <SettingsIcon className="w-4 h-4" /> }
+]
+
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<
-    | 'dashboard'
-    | 'proxies'
-    | 'connections'
-    | 'routing'
-    | 'ruleproviders'
-    | 'dns'
-    | 'traffic'
-    | 'logs'
-    | 'service'
-    | 'settings'
-  >('dashboard')
+  const [activeTab, setActiveTab] = useState<TabId>('dashboard')
   const [config, setConfig] = useState<AppConfig>(INITIAL_CONFIG)
   const [abnormalAlert, setAbnormalAlert] = useState<{
     reason: string
@@ -117,27 +131,25 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-[#0b0f19] text-slate-100 font-sans select-none overflow-hidden border border-slate-800/80 rounded-xl shadow-2xl">
-      {/* Windows Frameless TitleBar */}
+    <div className="fx-app-shell flex flex-col h-screen w-screen font-sans select-none overflow-hidden rounded-xl shadow-soft">
       <TitleBar title="draft-one" />
 
-      {/* Main Interface Manual Operation Banner */}
       {abnormalAlert && (
-        <div className="bg-amber-950/90 border-b border-amber-500/40 px-5 py-2.5 flex items-center justify-between text-amber-200 shadow-md backdrop-blur-md select-none transition-all z-20">
+        <div className="bg-amber-950/50 px-5 py-2.5 flex items-center justify-between text-amber-100 select-none transition duration-fx z-20">
           <div className="flex items-center gap-3 min-w-0 pr-4">
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 animate-pulse" />
-            <div className="text-xs text-amber-300 font-medium">
+            <div className="text-xs text-amber-200/90 font-medium">
               {abnormalAlert.systemProxyActive ? (
                 <span>
-                  <strong className="font-semibold text-amber-200">内核异常或未运行</strong>
-                  <span className="text-amber-300/90 ml-1.5">
+                  <strong className="font-semibold text-amber-100">内核异常或未运行</strong>
+                  <span className="text-amber-200/80 ml-1.5">
                     — 当前 Windows 系统代理仍处于开启状态，若无法加载网页，请手动点击关闭代理或尝试重启内核。
                   </span>
                 </span>
               ) : (
                 <span>
-                  <strong className="font-semibold text-amber-200">内核状态提示</strong>
-                  <span className="text-amber-300/90 ml-1.5">{abnormalAlert.message}</span>
+                  <strong className="font-semibold text-amber-100">内核状态提示</strong>
+                  <span className="text-amber-200/80 ml-1.5">{abnormalAlert.message}</span>
                 </span>
               )}
             </div>
@@ -149,36 +161,37 @@ export const App: React.FC = () => {
                 onClick={() => {
                   void window.api.resolvePortConflict()
                 }}
-                className="px-3 py-1 bg-rose-600/30 hover:bg-rose-600/50 text-rose-100 border border-rose-500/50 rounded-lg text-xs font-medium transition shadow-sm"
+                className="px-3 py-1 bg-fx-danger/25 hover:bg-fx-danger/40 text-rose-100 rounded-xl text-xs font-medium transition duration-fx"
               >
                 处理端口占用
               </button>
             )}
             {abnormalAlert.systemProxyActive && (
               <button
+                type="button"
                 onClick={handleManualDisableProxy}
-                className="px-3 py-1 bg-amber-500/25 hover:bg-amber-500/40 text-amber-200 hover:text-white border border-amber-500/50 rounded-lg text-xs font-medium transition shadow-sm"
+                className="px-3 py-1 bg-amber-500/25 hover:bg-amber-500/40 text-amber-100 rounded-xl text-xs font-medium transition duration-fx"
               >
                 一键关闭系统代理
               </button>
             )}
             <button
+              type="button"
               onClick={handleManualRestartCore}
               disabled={isRestartingCore}
-              className="px-3 py-1 bg-blue-600/35 hover:bg-blue-600/55 text-blue-200 hover:text-white border border-blue-500/50 rounded-lg text-xs font-medium transition flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+              className="fx-btn-accent disabled:opacity-50"
             >
               <RefreshCw className={`w-3 h-3 ${isRestartingCore ? 'animate-spin' : ''}`} />
               <span>重启内核</span>
             </button>
-            <button
-              onClick={() => setActiveTab('logs')}
-              className="px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium border border-slate-700/60 transition"
-            >
+            <button type="button" onClick={() => setActiveTab('logs')} className="fx-btn">
               查看日志
             </button>
             <button
+              type="button"
               onClick={() => setAbnormalAlert(null)}
-              className="p-1 hover:bg-amber-500/20 text-amber-400 hover:text-amber-200 rounded-md transition ml-1"
+              className="p-1 hover:bg-amber-500/20 text-amber-400 hover:text-amber-200 rounded-md transition duration-fx ml-1"
+              aria-label="关闭提示"
               title="关闭提示"
             >
               <X className="w-3.5 h-3.5" />
@@ -187,147 +200,33 @@ export const App: React.FC = () => {
         </div>
       )}
 
-      {/* Main Container */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Left Navigation Sidebar */}
-        <aside className="w-56 bg-slate-950/70 border-r border-slate-800/80 flex flex-col justify-between p-3 select-none">
-          <div className="space-y-1.5">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'dashboard'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span>控制面板</span>
-            </button>
-
-            <button
-              type="button"
-              aria-current={activeTab === 'proxies' ? 'page' : undefined}
-              onClick={() => setActiveTab('proxies')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'proxies'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Server className="w-4 h-4" />
-              <span>节点中心</span>
-            </button>
-
-            <button
-              type="button"
-              aria-current={activeTab === 'connections' ? 'page' : undefined}
-              onClick={() => setActiveTab('connections')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'connections'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Radio className="w-4 h-4" />
-              <span>实时连接管理</span>
-            </button>
-
-            <button
-              type="button"
-              aria-current={activeTab === 'traffic' ? 'page' : undefined}
-              onClick={() => setActiveTab('traffic')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'traffic'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Activity className="w-4 h-4" />
-              <span>流量统计分析</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('routing')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'routing'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Route className="w-4 h-4" />
-              <span>路由分流规则</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('ruleproviders')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'ruleproviders'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Database className="w-4 h-4" />
-              <span>规则库管理</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('dns')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'dns'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Globe2 className="w-4 h-4" />
-              <span>DNS 策略分流</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('logs')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'logs'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Terminal className="w-4 h-4" />
-              <span>实时内核日志</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('service')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'service'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <Wrench className="w-4 h-4" />
-              <span>系统服务与工具</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('settings')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-                activeTab === 'settings'
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <SettingsIcon className="w-4 h-4" />
-              <span>应用与内核设置</span>
-            </button>
+        <aside className="w-56 bg-fx-elevated flex flex-col justify-between p-3 select-none shadow-soft">
+          <div className="space-y-0.5">
+            {NAV_ITEMS.map((item) => {
+              const active = activeTab === item.id
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-current={active ? 'page' : undefined}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`fx-nav ${active ? 'fx-nav-active' : ''}`}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </button>
+              )
+            })}
           </div>
 
-          {/* Bottom badge */}
-          <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 text-center">
-            <div className="text-xs font-semibold text-slate-300">draft-one Engine</div>
-            <div className="text-[11px] text-slate-500 mt-0.5">以节点为中心 · 零感热重载</div>
+          <div className="px-3 py-2.5 rounded-xl bg-fx-bg/80 text-center">
+            <div className="text-[11px] font-medium text-fx-muted/80">draft-one</div>
+            <div className="text-[10px] text-fx-muted/50 mt-0.5">节点中心 · 热重载</div>
           </div>
         </aside>
 
-        {/* Content View Area */}
-        <main className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-slate-900/40 to-slate-950/80">
+        <main className="flex-1 overflow-y-auto p-7 bg-transparent">
           {activeTab === 'dashboard' && (
             <Dashboard
               config={config}

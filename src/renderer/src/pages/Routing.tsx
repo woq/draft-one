@@ -78,24 +78,20 @@ const SortableRuleRow: React.FC<SortableRuleRowProps> = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`group flex items-center gap-3 p-3 rounded-xl border transition-all ${
-        rule.enabled
-          ? 'bg-slate-900/60 border-slate-800/80 hover:border-slate-700'
-          : 'bg-slate-950/40 border-slate-800/40 opacity-50'
-      }`}
+      className={`group flex items-center gap-3 p-3 rounded-xl transition-all ${rule.enabled ? 'bg-fx-elevated hover:bg-fx-surface' : 'bg-fx-bg/40 opacity-50'}`}
     >
       {/* Drag handle */}
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab active:cursor-grabbing text-slate-500 hover:text-slate-300 p-1"
+        className="cursor-grab active:cursor-grabbing text-fx-muted hover:text-fx-text/90 p-1"
         title="拖动调整匹配优先级"
       >
         <GripVertical className="w-4 h-4" />
       </div>
 
       {/* Priority index badge */}
-      <div className="w-6 text-center text-xs font-mono font-bold text-slate-500">
+      <div className="w-6 text-center text-xs font-mono font-bold text-fx-muted">
         #{index + 1}
       </div>
 
@@ -103,7 +99,7 @@ const SortableRuleRow: React.FC<SortableRuleRowProps> = ({
       <select
         value={rule.type}
         onChange={(e) => onUpdate({ ...rule, type: e.target.value as RuleType })}
-        className="bg-slate-800/80 border border-slate-700 text-xs rounded-lg px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-blue-500"
+        className="bg-fx-surface text-xs rounded-lg px-2.5 py-1.5 text-fx-text focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
       >
         {RULE_TYPES.map((t) => (
           <option key={t.value} value={t.value}>
@@ -115,7 +111,7 @@ const SortableRuleRow: React.FC<SortableRuleRowProps> = ({
       {/* Rule Payload Input */}
       <div className="flex-1">
         {rule.type === 'MATCH' ? (
-          <div className="text-xs text-slate-500 italic px-2">
+          <div className="text-xs text-fx-muted italic px-2">
             未被上面任何规则命中的流量兜底处理
           </div>
         ) : (
@@ -129,10 +125,10 @@ const SortableRuleRow: React.FC<SortableRuleRowProps> = ({
               }
               value={rule.payload}
               onChange={(e) => onUpdate({ ...rule, payload: e.target.value })}
-              className="w-full bg-slate-950/60 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono"
+              className="w-full bg-fx-bg rounded-lg px-3 py-1.5 text-xs text-fx-text placeholder:text-fx-muted focus:outline-none focus:ring-1 focus:ring-fx-accent/40 font-mono"
             />
             {rule.description && (
-              <div className="mt-1 text-[10px] leading-relaxed text-slate-500 break-all">
+              <div className="mt-1 text-[10px] leading-relaxed text-fx-muted break-all">
                 {rule.description}
               </div>
             )}
@@ -144,31 +140,23 @@ const SortableRuleRow: React.FC<SortableRuleRowProps> = ({
       <select
         value={rule.target}
         onChange={(e) => onUpdate({ ...rule, target: e.target.value })}
-        className={`text-xs font-semibold rounded-lg px-2.5 py-1.5 border focus:outline-none max-w-[200px] truncate ${
-          rule.target === 'DIRECT'
-            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-            : rule.target === 'REJECT'
-              ? 'bg-rose-500/10 text-rose-400 border-rose-500/30'
-              : rule.target === 'PROXY'
-                ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                : 'bg-purple-500/15 text-purple-300 border-purple-500/40 shadow-sm'
-        }`}
+        className={`text-xs font-semibold rounded-lg px-2.5 py-1.5 focus:outline-none max-w-[200px] truncate ${ rule.target === 'DIRECT' ? 'bg-fx-accent-dim text-fx-accent ' : rule.target === 'REJECT' ? 'bg-rose-500/10 text-rose-400 ' : rule.target === 'PROXY' ? 'bg-fx-accent-dim text-fx-accent ' : 'bg-fx-accent-dim text-fx-accent shadow-sm' }`}
       >
-        <optgroup label="基础策略" className="bg-slate-900 text-slate-400 font-normal">
-          <option value="PROXY" className="bg-slate-900 text-blue-400 font-semibold">
+        <optgroup label="基础策略" className="bg-fx-elevated text-fx-muted font-normal">
+          <option value="PROXY" className="bg-fx-elevated text-fx-accent font-semibold">
             PROXY (默认主节点)
           </option>
-          <option value="DIRECT" className="bg-slate-900 text-emerald-400 font-semibold">
+          <option value="DIRECT" className="bg-fx-elevated text-fx-accent font-semibold">
             DIRECT (直连)
           </option>
-          <option value="REJECT" className="bg-slate-900 text-rose-400 font-semibold">
+          <option value="REJECT" className="bg-fx-elevated text-rose-400 font-semibold">
             REJECT (拦截)
           </option>
         </optgroup>
         {nodes && nodes.length > 0 && (
-          <optgroup label="指定具体节点出站" className="bg-slate-900 text-purple-400 font-normal">
+          <optgroup label="指定具体节点出站" className="bg-fx-elevated text-fx-accent font-normal">
             {nodes.map((n) => (
-              <option key={n.name} value={n.name} className="bg-slate-900 text-slate-200">
+              <option key={n.name} value={n.name} className="bg-fx-elevated text-fx-text">
                 ⚡ {n.name} ({n.type})
               </option>
             ))}
@@ -179,9 +167,7 @@ const SortableRuleRow: React.FC<SortableRuleRowProps> = ({
       {/* Enable / Disable switch */}
       <button
         onClick={() => onUpdate({ ...rule, enabled: !rule.enabled })}
-        className={`p-1 text-xs rounded transition ${
-          rule.enabled ? 'text-emerald-400 hover:text-emerald-300' : 'text-slate-600 hover:text-slate-400'
-        }`}
+        className={`p-1 text-xs rounded transition ${ rule.enabled ? 'text-fx-accent hover:text-fx-accent' : 'text-fx-muted hover:text-fx-muted' }`}
         title={rule.enabled ? '规则已启用 (点击禁用)' : '规则已禁用 (点击启用)'}
         aria-pressed={rule.enabled}
         aria-label={rule.enabled ? '禁用这条规则' : '启用这条规则'}
@@ -192,7 +178,7 @@ const SortableRuleRow: React.FC<SortableRuleRowProps> = ({
       {/* Delete Rule */}
       <button
         onClick={() => onDelete(rule.id)}
-        className="p-1 text-slate-500 hover:text-rose-400 transition"
+        className="p-1 text-fx-muted hover:text-rose-400 transition"
         title="删除规则"
         aria-label="删除规则"
       >
@@ -310,10 +296,10 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Route className="w-5 h-5 text-blue-400" />
-            <h2 className="text-lg font-bold text-slate-100">自由路由分流 (自上而下首命中匹配)</h2>
+            <Route className="w-5 h-5 text-fx-accent" />
+            <h2 className="text-lg font-bold text-fx-text">自由路由分流 (自上而下首命中匹配)</h2>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-fx-muted mt-1">
             分三块，从上到下匹配。自定义规则在最前，然后是两条广告拦截，再是直连。同一块里可以拖动排序。
           </p>
         </div>
@@ -321,7 +307,7 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleResetDefaultRules}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fx-surface hover:bg-fx-surface-hover text-xs text-fx-text/90 transition"
             title="恢复默认分流：自定义为空，广告拦截，然后是直连和兜底"
           >
             <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
@@ -331,17 +317,17 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
           <button
             onClick={handleUpdateGeoData}
             disabled={isUpdatingGeo}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fx-surface hover:bg-fx-surface-hover text-xs text-fx-text/90 transition"
             title="下载 GeoIP、GeoSite、Country MMDB、anti-AD 和四条直连规则集"
           >
-            <Database className="w-3.5 h-3.5 text-blue-400" />
+            <Database className="w-3.5 h-3.5 text-fx-accent" />
             <RefreshCw className={`w-3 h-3 ${isUpdatingGeo ? 'animate-spin' : ''}`} />
             <span>{isUpdatingGeo ? '正在更新规则库...' : '更新规则库'}</span>
           </button>
 
           <button
             onClick={handleAddRule}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-medium text-white shadow-sm transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-cyan-400 text-xs font-medium text-white shadow-sm transition"
           >
             <Plus className="w-4 h-4" />
             <span>添加分流规则</span>
@@ -349,11 +335,7 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
 
           <button
             onClick={handleApplyAndSave}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-              isSaved
-                ? 'bg-emerald-600/20 border-emerald-500 text-emerald-400'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${ isSaved ? 'bg-fx-accent-dim  text-fx-accent' : 'bg-fx-surface hover:bg-fx-surface-hover text-fx-text ' }`}
           >
             {isSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
             <span>{isSaved ? '已保存并热生效' : '保存生效'}</span>
@@ -362,7 +344,7 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
       </div>
 
       {geoMsg && (
-        <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300">
+        <div className="p-3 rounded-xl bg-fx-accent-dim text-xs text-fx-accent">
           {geoMsg}
         </div>
       )}
@@ -373,7 +355,7 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
             id: 'custom' as const,
             title: '自定义规则',
             hint: '优先匹配。自己加的域名、网段、进程和其他规则都在这里。',
-            accent: 'text-blue-300'
+            accent: 'text-fx-accent'
           },
           {
             id: 'reject' as const,
@@ -385,20 +367,20 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
             id: 'direct' as const,
             title: '直连',
             hint: '局域网名单、微软联网探测、游戏下载、微信、中国大陆名单，以及 geosite:cn 和 GEOIP CN。',
-            accent: 'text-emerald-300'
+            accent: 'text-fx-accent'
           }
         ] as const
       ).map((section) => {
         const items = rules.filter((rule) => ruleSection(rule) === section.id)
         const offset = rules.findIndex((rule) => rule.id === items[0]?.id)
         return (
-          <section key={section.id} className="rounded-2xl border border-slate-800/80 bg-slate-950/30 p-4 space-y-3">
+          <section key={section.id} className="rounded-2xl bg-fx-bg p-4 space-y-3">
             <div>
               <h3 className={`text-sm font-bold ${section.accent}`}>{section.title}</h3>
-              <p className="text-[11px] text-slate-500 mt-1">{section.hint}</p>
+              <p className="text-[11px] text-fx-muted mt-1">{section.hint}</p>
             </div>
             {items.length === 0 ? (
-              <div className="text-xs text-slate-500 px-1">这一块还没有规则。</div>
+              <div className="text-xs text-fx-muted px-1">这一块还没有规则。</div>
             ) : (
               <DndContext
                 sensors={sensors}
@@ -426,10 +408,10 @@ export const Routing: React.FC<RoutingProps> = ({ config, onUpdateConfig }) => {
       })}
 
       {rules.some((rule) => ruleSection(rule) === 'match') && (
-        <section className="rounded-2xl border border-slate-800/80 bg-slate-950/30 p-4 space-y-3">
+        <section className="rounded-2xl bg-fx-bg p-4 space-y-3">
           <div>
-            <h3 className="text-sm font-bold text-slate-300">兜底</h3>
-            <p className="text-[11px] text-slate-500 mt-1">前面都没命中时走这里。</p>
+            <h3 className="text-sm font-bold text-fx-text/90">兜底</h3>
+            <p className="text-[11px] text-fx-muted mt-1">前面都没命中时走这里。</p>
           </div>
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd('match')}>
             <SortableContext

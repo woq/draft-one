@@ -197,27 +197,27 @@ export const Logs: React.FC = () => {
     const t = (type || 'info').toLowerCase()
     if (t === 'error') {
       return (
-        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400">
           ERROR
         </span>
       )
     }
     if (t === 'warning' || t === 'warn') {
       return (
-        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400">
           WARN
         </span>
       )
     }
     if (t === 'debug') {
       return (
-        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-500/10 text-slate-400 border border-slate-500/20">
+        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-fx-muted/10 text-fx-muted">
           DEBUG
         </span>
       )
     }
     return (
-      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-fx-accent-dim text-fx-accent">
         INFO
       </span>
     )
@@ -244,13 +244,13 @@ export const Logs: React.FC = () => {
   return (
     <div className="space-y-4 max-w-6xl mx-auto h-[calc(100vh-6.5rem)] flex flex-col">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800/80 flex-shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 flex-shrink-0">
         <div>
           <div className="flex items-center gap-2">
-            <Terminal className="w-5 h-5 text-blue-400" />
-            <h2 className="text-lg font-bold text-slate-100">实时内核日志</h2>
+            <Terminal className="w-5 h-5 text-fx-accent" />
+            <h2 className="text-lg font-bold text-fx-text">实时内核日志</h2>
           </div>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-fx-muted mt-0.5">
             默认显示全部日志。分流命中、DNS、内核信息和异常可以分开看。
           </p>
         </div>
@@ -259,24 +259,20 @@ export const Logs: React.FC = () => {
           {/* Order Toggle */}
           <button
             onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fx-surface hover:bg-fx-surface-hover text-xs font-semibold text-fx-text transition"
             title="切换日志排序方向"
           >
-            <ArrowDownUp className="w-3.5 h-3.5 text-blue-400" />
+            <ArrowDownUp className="w-3.5 h-3.5 text-fx-accent" />
             <span>{sortOrder === 'desc' ? '倒序 (最新在最上)' : '正序 (从旧到新)'}</span>
           </button>
 
           {/* Auto Scroll Toggle */}
           <button
             onClick={() => setAutoScroll(!autoScroll)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
-              autoScroll
-                ? 'bg-blue-600/15 border-blue-500/30 text-blue-300'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${ autoScroll ? 'bg-sky-500/15 text-fx-accent' : 'bg-fx-surface hover:bg-fx-surface-hover text-fx-text/90 ' }`}
           >
             {autoScroll ? (
-              <Pause className="w-3.5 h-3.5 text-blue-400" />
+              <Pause className="w-3.5 h-3.5 text-fx-accent" />
             ) : (
               <Play className="w-3.5 h-3.5 text-amber-400" />
             )}
@@ -285,10 +281,10 @@ export const Logs: React.FC = () => {
 
           <button
             onClick={handleCopyLogs}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fx-surface hover:bg-fx-surface-hover text-xs font-semibold text-fx-text transition"
           >
             {copied ? (
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <Check className="w-3.5 h-3.5 text-fx-accent" />
             ) : (
               <Copy className="w-3.5 h-3.5" />
             )}
@@ -297,7 +293,7 @@ export const Logs: React.FC = () => {
 
           <button
             onClick={handleClear}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-950/40 text-xs font-semibold text-slate-300 hover:text-rose-300 border border-slate-700 hover:border-rose-800/60 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-fx-surface hover:bg-rose-950/40 text-xs font-semibold text-fx-text/90 hover:text-rose-300 hover:border-rose-800/60 transition"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>清空</span>
@@ -306,20 +302,16 @@ export const Logs: React.FC = () => {
       </div>
 
       {/* Main Category Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-1.5 rounded-xl bg-slate-900/70 border border-slate-800/80 flex-shrink-0">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-1.5 rounded-xl bg-fx-elevated flex-shrink-0">
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
           {/* 0. 全部日志 */}
           <button
             onClick={() => setActiveCategory('all')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeCategory === 'all'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${ activeCategory === 'all' ? 'bg-sky-500 text-white shadow-sm' : 'text-fx-muted hover:text-fx-text hover:bg-fx-surface/60' }`}
           >
-            <Layers className="w-3.5 h-3.5 text-blue-300" />
+            <Layers className="w-3.5 h-3.5 text-fx-accent" />
             <span>全部日志</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-300 font-mono">
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-fx-surface text-fx-text/90 font-mono">
               {counts.all}
             </span>
           </button>
@@ -327,15 +319,11 @@ export const Logs: React.FC = () => {
           {/* 1. 分流命中 */}
           <button
             onClick={() => setActiveCategory('routing')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeCategory === 'routing'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${ activeCategory === 'routing' ? 'bg-sky-500 text-white shadow-sm' : 'text-fx-muted hover:text-fx-text hover:bg-fx-surface/60' }`}
           >
             <Zap className="w-3.5 h-3.5 text-amber-300" />
             <span>分流命中 (域名/节点)</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-blue-500/30 text-blue-200 font-mono">
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-fx-accent-dim text-fx-accent font-mono">
               {counts.routing}
             </span>
           </button>
@@ -343,15 +331,11 @@ export const Logs: React.FC = () => {
           {/* 2. DNS 解析 */}
           <button
             onClick={() => setActiveCategory('dns')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeCategory === 'dns'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${ activeCategory === 'dns' ? 'bg-sky-500 text-white shadow-sm' : 'text-fx-muted hover:text-fx-text hover:bg-fx-surface/60' }`}
           >
-            <Globe2 className="w-3.5 h-3.5 text-emerald-300" />
+            <Globe2 className="w-3.5 h-3.5 text-fx-accent" />
             <span>DNS 解析记录</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-300 font-mono">
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-fx-surface text-fx-text/90 font-mono">
               {counts.dns}
             </span>
           </button>
@@ -359,15 +343,11 @@ export const Logs: React.FC = () => {
           {/* 3. 内核与系统 */}
           <button
             onClick={() => setActiveCategory('system')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeCategory === 'system'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-            }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${ activeCategory === 'system' ? 'bg-sky-500 text-white shadow-sm' : 'text-fx-muted hover:text-fx-text hover:bg-fx-surface/60' }`}
           >
             <Cpu className="w-3.5 h-3.5 text-sky-300" />
             <span>内核与系统</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-300 font-mono">
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-fx-surface text-fx-text/90 font-mono">
               {counts.system}
             </span>
           </button>
@@ -375,11 +355,7 @@ export const Logs: React.FC = () => {
           {/* 4. 异常报错 */}
           <button
             onClick={() => setActiveCategory('error')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeCategory === 'error'
-                ? 'bg-rose-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-rose-300 hover:bg-slate-800/60'
-            }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${ activeCategory === 'error' ? 'bg-rose-600 text-white shadow-sm' : 'text-fx-muted hover:text-rose-300 hover:bg-fx-surface/60' }`}
           >
             <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
             <span>异常与告警</span>
@@ -393,7 +369,7 @@ export const Logs: React.FC = () => {
 
         {/* Search input */}
         <div className="relative min-w-[220px]">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-fx-muted" />
           <input
             type="text"
             placeholder={
@@ -405,7 +381,7 @@ export const Logs: React.FC = () => {
             }
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 bg-slate-950/80 border border-slate-700 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500"
+            className="w-full pl-9 pr-3 py-1.5 bg-fx-bg rounded-lg text-xs text-fx-text placeholder:text-fx-muted focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
           />
         </div>
       </div>
@@ -413,7 +389,7 @@ export const Logs: React.FC = () => {
       {/* Routing Specific Sub-Filter Bar */}
       {activeCategory === 'routing' && (
         <div className="flex items-center gap-2 px-2 text-xs flex-shrink-0">
-          <span className="text-slate-500 text-[11px]">出站策略筛选:</span>
+          <span className="text-fx-muted text-[11px]">出站策略筛选:</span>
           <div className="flex items-center gap-1.5">
             {[
               { id: 'all', label: '全部连接' },
@@ -424,11 +400,7 @@ export const Logs: React.FC = () => {
               <button
                 key={sub.id}
                 onClick={() => setRoutingFilter(sub.id as any)}
-                className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition ${
-                  routingFilter === sub.id
-                    ? 'bg-blue-600/20 text-blue-300 border border-blue-500/40'
-                    : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-slate-800'
-                }`}
+                className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition ${ routingFilter === sub.id ? 'bg-sky-500/20 text-fx-accent border ' : 'bg-fx-elevated text-fx-muted hover:text-fx-text ' }`}
               >
                 {sub.label}
               </button>
@@ -440,10 +412,10 @@ export const Logs: React.FC = () => {
       {/* Terminal Log Console */}
       <div
         ref={scrollRef}
-        className="flex-1 min-h-0 bg-slate-950/90 border border-slate-800/90 rounded-2xl p-3 overflow-y-auto font-mono text-xs shadow-inner space-y-1.5 scrollbar-thin select-text"
+        className="flex-1 min-h-0 bg-fx-bg /90 rounded-2xl p-3 overflow-y-auto font-mono text-xs shadow-inner space-y-1.5 scrollbar-thin select-text"
       >
         {displayLogs.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-2 py-16">
+          <div className="h-full flex flex-col items-center justify-center text-fx-muted space-y-2 py-16">
             <Terminal className="w-8 h-8 opacity-40" />
             <div className="text-xs">
               {activeCategory === 'routing'
@@ -465,24 +437,20 @@ export const Logs: React.FC = () => {
               return (
                 <div
                   key={log.id}
-                  className="flex items-center gap-2.5 leading-relaxed hover:bg-slate-900/70 px-2.5 py-1.5 rounded-lg border border-slate-800/50 bg-slate-950/40 transition font-mono group"
+                  className="flex items-center gap-2.5 leading-relaxed hover:bg-fx-elevated px-2.5 py-1.5 rounded-lg /50 bg-fx-bg transition font-mono group"
                 >
                   {log.seq !== undefined && (
-                    <span className="text-[10px] text-slate-500 font-mono px-1.5 py-0.2 rounded bg-slate-900 border border-slate-800 select-none flex-shrink-0">
+                    <span className="text-[10px] text-fx-muted font-mono px-1.5 py-0.2 rounded bg-fx-elevated select-none flex-shrink-0">
                       #{log.seq}
                     </span>
                   )}
-                  <span className="text-slate-500 text-[11px] whitespace-nowrap select-none font-mono">
+                  <span className="text-fx-muted text-[11px] whitespace-nowrap select-none font-mono">
                     {log.time}
                   </span>
 
                   {/* Protocol */}
                   <span
-                    className={`text-[10px] font-bold px-1.5 py-0.2 rounded select-none flex-shrink-0 ${
-                      routing?.protocol === 'UDP'
-                        ? 'bg-purple-500/10 text-purple-300 border border-purple-500/20'
-                        : 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/20'
-                    }`}
+                    className={`text-[10px] font-bold px-1.5 py-0.2 rounded select-none flex-shrink-0 ${ routing?.protocol === 'UDP' ? 'bg-fx-accent-dim text-fx-accent ' : 'bg-cyan-500/10 text-cyan-300 ' }`}
                   >
                     {routing?.protocol || 'TCP'}
                   </span>
@@ -490,7 +458,7 @@ export const Logs: React.FC = () => {
                   {/* Target Domain or IP */}
                   <div className="flex-1 min-w-0 flex items-center gap-2">
                     <span
-                      className="font-medium text-slate-100 text-xs font-mono truncate"
+                      className="font-medium text-fx-text text-xs font-mono truncate"
                       title={routing?.target || log.payload}
                     >
                       {routing?.target || log.payload}
@@ -499,7 +467,7 @@ export const Logs: React.FC = () => {
 
                   {/* Matched Rule */}
                   {routing?.rule && (
-                    <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20 select-none flex-shrink-0">
+                    <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded bg-fx-accent-dim text-fx-accent select-none flex-shrink-0">
                       <span>🎯</span>
                       <span>{routing.rule}</span>
                     </span>
@@ -508,17 +476,17 @@ export const Logs: React.FC = () => {
                   {/* Outbound Destination Badge */}
                   <div className="flex-shrink-0 select-none">
                     {isDirect ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-emerald-500/15 text-fx-accent">
                         <span>⚡</span>
                         <span>直连 (DIRECT)</span>
                       </span>
                     ) : isReject ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-rose-500/15 text-rose-300 border border-rose-500/30">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-rose-500/15 text-rose-300">
                         <span>🛑</span>
                         <span>拦截 (REJECT)</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-amber-500/15 text-amber-300">
                         <span>🚀</span>
                         <span className="max-w-[180px] truncate">
                           {routing?.outbound || 'PROXY'}
@@ -537,32 +505,32 @@ export const Logs: React.FC = () => {
               return (
                 <div
                   key={log.id}
-                  className="flex items-start gap-2.5 leading-relaxed hover:bg-slate-900/60 px-2 py-1 rounded transition font-mono border-b border-slate-900/40"
+                  className="flex items-start gap-2.5 leading-relaxed hover:bg-fx-surface px-2 py-1 rounded transition font-mono"
                 >
                   {log.seq !== undefined && (
-                    <span className="text-[10px] text-slate-500 font-mono px-1.5 py-0.2 rounded bg-slate-900 border border-slate-800 select-none flex-shrink-0">
+                    <span className="text-[10px] text-fx-muted font-mono px-1.5 py-0.2 rounded bg-fx-elevated select-none flex-shrink-0">
                       #{log.seq}
                     </span>
                   )}
-                  <span className="text-slate-500 text-[11px] whitespace-nowrap select-none font-mono">
+                  <span className="text-fx-muted text-[11px] whitespace-nowrap select-none font-mono">
                     {log.time}
                   </span>
                   <span className="select-none flex-shrink-0">
                     {isResolve ? (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-sky-500/10 text-sky-400">
                         QUERY
                       </span>
                     ) : isAnswer ? (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-fx-accent-dim text-fx-accent">
                         ANSWER
                       </span>
                     ) : (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-500/10 text-slate-400 border border-slate-500/20">
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-fx-muted/10 text-fx-muted">
                         DNS
                       </span>
                     )}
                   </span>
-                  <span className="text-slate-300 break-all whitespace-pre-wrap">
+                  <span className="text-fx-text/90 break-all whitespace-pre-wrap">
                     {log.payload.replace(/^\[DNS\]\s*/i, '')}
                   </span>
                 </div>
@@ -573,18 +541,18 @@ export const Logs: React.FC = () => {
             return (
               <div
                 key={log.id}
-                className="flex items-start gap-2.5 leading-relaxed hover:bg-slate-900/60 px-2 py-0.5 rounded transition font-mono"
+                className="flex items-start gap-2.5 leading-relaxed hover:bg-fx-surface px-2 py-0.5 rounded transition font-mono"
               >
                 {log.seq !== undefined && (
-                  <span className="text-[10px] text-slate-500 font-mono px-1.5 py-0.2 rounded bg-slate-900 border border-slate-800 select-none flex-shrink-0">
+                  <span className="text-[10px] text-fx-muted font-mono px-1.5 py-0.2 rounded bg-fx-elevated select-none flex-shrink-0">
                     #{log.seq}
                   </span>
                 )}
-                <span className="text-slate-500 text-[11px] whitespace-nowrap select-none font-mono">
+                <span className="text-fx-muted text-[11px] whitespace-nowrap select-none font-mono">
                   {log.time}
                 </span>
                 <span className="select-none flex-shrink-0">{getLevelBadge(log.type)}</span>
-                <span className="text-slate-300 break-all whitespace-pre-wrap">{log.payload}</span>
+                <span className="text-fx-text/90 break-all whitespace-pre-wrap">{log.payload}</span>
               </div>
             )
           })
@@ -592,12 +560,12 @@ export const Logs: React.FC = () => {
       </div>
 
       {/* Bottom Status Indicator */}
-      <div className="flex items-center justify-between text-[11px] text-slate-500 px-2 flex-shrink-0">
+      <div className="flex items-center justify-between text-[11px] text-fx-muted px-2 flex-shrink-0">
         <span>
           当前分类显示 {displayLogs.length} 条记录 (全库缓冲共 {logs.length} 条，上限 2000 条)
         </span>
         {autoScroll && (
-          <span className="flex items-center gap-1 text-emerald-400">
+          <span className="flex items-center gap-1 text-fx-accent">
             {sortOrder === 'desc' ? (
               <ArrowUp className="w-3 h-3 animate-bounce" />
             ) : (

@@ -4,6 +4,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 export const api = {
   // App Config & Rules
   getAppVersion: () => ipcRenderer.invoke('app:get-version'),
+  isPreviewInstance: () => ipcRenderer.invoke('app:is-preview') as Promise<boolean>,
   getConfig: () => ipcRenderer.invoke('app:get-config'),
   saveConfig: (config: unknown) => ipcRenderer.invoke('app:save-config', config),
   reloadCoreConfig: () => ipcRenderer.invoke('core:reload'),

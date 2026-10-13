@@ -7,26 +7,219 @@
   --foreground: 210 40% 98%;
   --card: 222.2 84% 7%;
   --card-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --muted: 217.2 32.6% 17.5%;
+  /* Soft hairline — never bright white */
+  --border: 215 28% 22%;
+  --muted: 215 28% 22%;
   --muted-foreground: 215 20.2% 65.1%;
+
+  /* Soft Tonal — deeper contrast */
+  --fx-bg: #04070c;
+  --fx-bg-elevated: #101826;
+  --fx-surface: #1c283c;
+  --fx-surface-hover: #253348;
+  --fx-glass: #101826;
+  --fx-border: rgba(148, 175, 200, 0.12);
+  --fx-border-strong: rgba(56, 189, 248, 0.28);
+  --fx-accent: #22d3ee;
+  --fx-accent-dim: rgba(34, 211, 238, 0.2);
+  --fx-text: #f4f9fc;
+  --fx-muted: #a8bbcf;
+  --fx-danger: #fb7185;
+  --fx-ok: #2dd4bf;
+  --fx-glow: rgba(34, 211, 238, 0.16);
 }
 
-/* Custom Scrollbar */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    background: var(--fx-bg);
+    color: var(--fx-text);
+    font-family: Outfit, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Bare Tailwind `border` / `border-t` use currentColor → looks white.
+     Force a soft hairline everywhere unless a color utility overrides. */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--fx-border);
+  }
+}
+
+@layer components {
+  .fx-app-shell {
+    position: relative;
+    background: var(--fx-bg);
+    color: var(--fx-text);
+    isolation: isolate;
+  }
+
+  .fx-app-shell::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 85% 55% at 8% -15%, var(--fx-glow), transparent 52%),
+      radial-gradient(ellipse 50% 40% at 95% 0%, rgba(14, 165, 233, 0.12), transparent 45%),
+      linear-gradient(180deg, #081018 0%, var(--fx-bg) 38%, #020508 100%);
+  }
+
+  .fx-app-shell > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .fx-panel {
+    background: var(--fx-bg-elevated);
+    border: none;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .fx-glass {
+    background: var(--fx-bg-elevated);
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+  }
+
+  .fx-glass::before,
+  .fx-glass::after {
+    display: none;
+  }
+
+  .fx-glass-strong {
+    background: var(--fx-surface);
+    box-shadow: 0 14px 48px rgba(0, 0, 0, 0.55);
+  }
+
+  .fx-nav {
+    @apply w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition duration-200;
+    color: var(--fx-muted);
+    border: none;
+    background: transparent;
+    position: relative;
+  }
+
+  .fx-nav:hover {
+    color: var(--fx-text);
+    background: var(--fx-surface-hover);
+  }
+
+  .fx-nav-active {
+    color: var(--fx-accent);
+    background: var(--fx-accent-dim);
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    font-weight: 600;
+  }
+
+  .fx-nav-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18%;
+    bottom: 18%;
+    width: 3px;
+    border-radius: 9999px;
+    background: var(--fx-accent);
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+  }
+
+  .fx-btn {
+    @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition duration-200;
+    border: none;
+    background: var(--fx-surface);
+    color: var(--fx-text);
+  }
+
+  .fx-btn:hover {
+    background: var(--fx-surface-hover);
+  }
+
+  .fx-btn-accent {
+    @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition duration-200;
+    border: none;
+    background: var(--fx-accent-dim);
+    color: var(--fx-accent);
+  }
+
+  .fx-btn-accent:hover {
+    background: rgba(34, 211, 238, 0.3);
+  }
+
+  .fx-input {
+    @apply rounded-xl text-xs transition duration-150 focus:outline-none;
+    background: #020508;
+    border: none;
+    color: var(--fx-text);
+    box-shadow: inset 0 0 0 1px var(--fx-border);
+  }
+
+  .fx-input:focus {
+    box-shadow: inset 0 0 0 1px var(--fx-border-strong);
+  }
+
+  .fx-input::placeholder {
+    color: var(--fx-muted);
+  }
+
+  .fx-chip {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium;
+    border: none;
+  }
+
+  /* Success / healthy — ice-cyan family (not emerald green) */
+  .fx-chip-ok {
+    background: rgba(34, 211, 238, 0.16);
+    color: var(--fx-accent);
+  }
+
+  .fx-row {
+    @apply transition duration-150;
+  }
+
+  .fx-row:hover {
+    background: var(--fx-surface);
+  }
+
+  .fx-chip-accent {
+    background: var(--fx-accent-dim);
+    color: var(--fx-accent);
+  }
+
+  .fx-chip-muted {
+    background: rgba(168, 187, 207, 0.14);
+    color: var(--fx-muted);
+  }
+
+  /* Soft section divider (replaces harsh border-t) */
+  .fx-divider {
+    border: none;
+    border-top: 1px solid var(--fx-border);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.7);
+  background: rgba(168, 187, 207, 0.35);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(71, 85, 105, 0.9);
+  background: rgba(34, 211, 238, 0.45);
 }

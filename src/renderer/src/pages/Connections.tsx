@@ -200,14 +200,14 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
     <div className="space-y-5">
       {/* Action Notification Banner */}
       {actionNotice && (
-        <div className="px-4 py-2.5 rounded-xl bg-blue-500/20 border border-blue-500/40 text-blue-200 text-xs flex items-center justify-between shadow-lg animate-in fade-in duration-200">
+        <div className="px-4 py-2.5 rounded-xl bg-fx-accent-dim border text-fx-accent text-xs flex items-center justify-between animate-in fade-in duration-200">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-blue-400" />
+            <CheckCircle2 className="w-4 h-4 text-fx-accent" />
             <span>{actionNotice}</span>
           </div>
           <button
             onClick={() => setActionNotice(null)}
-            className="p-1 hover:bg-blue-500/30 rounded text-blue-300"
+            className="p-1 hover:bg-fx-accent-dim rounded text-fx-accent"
           >
             ×
           </button>
@@ -218,13 +218,13 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Radio className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-lg font-bold text-slate-100">实时连接管理</h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-medium">
+            <Radio className="w-5 h-5 text-fx-accent" />
+            <h2 className="text-lg font-bold text-fx-text">实时连接管理</h2>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-fx-accent-dim text-fx-accent font-mono font-medium">
               {snapshot.connections.length} 活跃
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-fx-muted mt-1">
             监控当前由内核代理转发的 TCP / UDP 会话，提供进程级追踪、分流审计与连接阻断。
           </p>
         </div>
@@ -232,11 +232,7 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsAutoRefresh(!isAutoRefresh)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-              isAutoRefresh
-                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
-                : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${ isAutoRefresh ? 'bg-emerald-500/15 text-fx-accent hover:bg-emerald-500/25' : 'bg-fx-surface text-fx-muted hover:text-fx-text' }`}
             title={isAutoRefresh ? '暂停自动刷新' : '恢复自动刷新'}
           >
             {isAutoRefresh ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -246,7 +242,7 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
           <button
             onClick={handleManualCheck}
             disabled={isManualChecking}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg fx-btn transition"
             title="手动刷新连接快照"
           >
             <RotateCw className={`w-3.5 h-3.5 ${isManualChecking ? 'animate-spin' : ''}`} />
@@ -256,7 +252,7 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
           <button
             onClick={handleCloseAll}
             disabled={snapshot.connections.length === 0}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-medium transition disabled:opacity-40 disabled:pointer-events-none"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 text-xs font-medium transition disabled:opacity-40 disabled:pointer-events-none"
             title="掐断全部当前活跃连接"
           >
             <Trash2 className="w-3.5 h-3.5 text-rose-400" />
@@ -268,20 +264,20 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
       {/* Top Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Active Session Count */}
-        <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-lg space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-4 rounded-2xl fx-panel space-y-1.5">
+          <div className="flex items-center justify-between text-xs text-fx-muted">
             <span>当前活跃会话</span>
-            <Radio className="w-4 h-4 text-emerald-400" />
+            <Radio className="w-4 h-4 text-fx-accent" />
           </div>
-          <div className="text-2xl font-extrabold text-slate-100 font-mono">
+          <div className="text-2xl font-extrabold text-fx-text font-mono">
             {snapshot.connections.length}
           </div>
-          <div className="text-[11px] text-slate-500 flex items-center justify-between">
+          <div className="text-[11px] text-fx-muted flex items-center justify-between">
             <span>TCP / UDP 活跃套接字</span>
             {onNavigateToTraffic && (
               <button
                 onClick={onNavigateToTraffic}
-                className="text-blue-400 hover:underline cursor-pointer"
+                className="text-fx-accent hover:underline cursor-pointer"
               >
                 查看累计流量 →
               </button>
@@ -290,64 +286,64 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
         </div>
 
         {/* Live Download Speed */}
-        <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-lg space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-4 rounded-2xl fx-panel space-y-1.5">
+          <div className="flex items-center justify-between text-xs text-fx-muted">
             <span>实时下行速率</span>
-            <ArrowDownCircle className="w-4 h-4 text-emerald-400" />
+            <ArrowDownCircle className="w-4 h-4 text-fx-accent" />
           </div>
-          <div className="text-2xl font-extrabold text-emerald-400 font-mono">
+          <div className="text-2xl font-extrabold text-fx-accent font-mono">
             {formatSpeed(totalLiveDown)}
           </div>
-          <div className="text-[11px] text-slate-500 font-mono">
+          <div className="text-[11px] text-fx-muted font-mono">
             内核累计: {formatBytes(snapshot.downloadTotal)}
           </div>
         </div>
 
         {/* Live Upload Speed */}
-        <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-lg space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-4 rounded-2xl fx-panel space-y-1.5">
+          <div className="flex items-center justify-between text-xs text-fx-muted">
             <span>实时上行速率</span>
-            <ArrowUpCircle className="w-4 h-4 text-blue-400" />
+            <ArrowUpCircle className="w-4 h-4 text-fx-accent" />
           </div>
-          <div className="text-2xl font-extrabold text-blue-400 font-mono">
+          <div className="text-2xl font-extrabold text-fx-accent font-mono">
             {formatSpeed(totalLiveUp)}
           </div>
-          <div className="text-[11px] text-slate-500 font-mono">
+          <div className="text-[11px] text-fx-muted font-mono">
             内核累计: {formatBytes(snapshot.uploadTotal)}
           </div>
         </div>
 
         {/* Filtered Count */}
-        <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-lg space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-4 rounded-2xl fx-panel space-y-1.5">
+          <div className="flex items-center justify-between text-xs text-fx-muted">
             <span>匹配筛选数量</span>
-            <Filter className="w-4 h-4 text-purple-400" />
+            <Filter className="w-4 h-4 text-fx-accent" />
           </div>
-          <div className="text-2xl font-extrabold text-purple-300 font-mono">
+          <div className="text-2xl font-extrabold text-fx-accent font-mono">
             {filteredConnections.length} / {snapshot.connections.length}
           </div>
-          <div className="text-[11px] text-slate-500">
+          <div className="text-[11px] text-fx-muted">
             当前列表可见会话条数
           </div>
         </div>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="p-4 rounded-2xl bg-fx-elevated flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Search input */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fx-muted" />
           <input
             type="text"
             placeholder="搜索目标域名、IP、进程名 (如 chrome.exe)、规则..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-8 py-1.5 bg-slate-950/80 border border-slate-700/80 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500"
+            className="w-full pl-9 pr-8 py-1.5 bg-fx-bg rounded-xl text-xs text-fx-text placeholder:text-fx-muted focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-fx-muted hover:text-fx-text/90"
             >
               ×
             </button>
@@ -357,16 +353,12 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-2 text-xs">
           {/* Protocol filter */}
-          <div className="flex rounded-lg bg-slate-950/80 p-0.5 border border-slate-800">
+          <div className="flex rounded-lg bg-fx-bg p-0.5">
             {(['ALL', 'TCP', 'UDP'] as const).map((proto) => (
               <button
                 key={proto}
                 onClick={() => setProtocolFilter(proto)}
-                className={`px-2.5 py-1 rounded-md transition text-[11px] font-medium ${
-                  protocolFilter === proto
-                    ? 'bg-blue-600/30 text-blue-300 font-semibold'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
+                className={`px-2.5 py-1 rounded-md transition text-[11px] font-medium ${ protocolFilter === proto ? 'bg-sky-500/30 text-fx-accent font-semibold' : 'text-fx-muted hover:text-fx-text' }`}
               >
                 {proto === 'ALL' ? '全部协议' : proto}
               </button>
@@ -374,16 +366,12 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
           </div>
 
           {/* Outbound filter */}
-          <div className="flex rounded-lg bg-slate-950/80 p-0.5 border border-slate-800">
+          <div className="flex rounded-lg bg-fx-bg p-0.5">
             {(['ALL', 'PROXY', 'DIRECT', 'REJECT'] as const).map((ob) => (
               <button
                 key={ob}
                 onClick={() => setOutboundFilter(ob)}
-                className={`px-2 py-1 rounded-md transition text-[11px] font-medium ${
-                  outboundFilter === ob
-                    ? 'bg-emerald-600/30 text-emerald-300 font-semibold'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
+                className={`px-2 py-1 rounded-md transition text-[11px] font-medium ${ outboundFilter === ob ? 'bg-fx-accent-dim text-fx-accent font-semibold' : 'text-fx-muted hover:text-fx-text' }`}
               >
                 {ob === 'ALL' ? '全部出站' : ob === 'PROXY' ? '海外' : ob === 'DIRECT' ? '直连' : '拦截'}
               </button>
@@ -395,7 +383,7 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="px-2.5 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-[11px] text-slate-300 focus:outline-none focus:border-blue-500"
+            className="px-2.5 py-1 rounded-lg bg-fx-bg text-[11px] text-fx-text/90 focus:outline-none focus:ring-1 focus:ring-fx-accent/40"
           >
             <option value="traffic">按流量排序</option>
             <option value="speed">按实时速度</option>
@@ -405,14 +393,14 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
       </div>
 
       {/* Connections List / Table */}
-      <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-xl">
+      <div className="p-5 rounded-2xl fx-panel">
         {filteredConnections.length === 0 ? (
           <div className="p-12 text-center space-y-2">
-            <Radio className="w-8 h-8 mx-auto text-slate-600" />
-            <div className="text-sm font-semibold text-slate-400">
+            <Radio className="w-8 h-8 mx-auto text-fx-muted" />
+            <div className="text-sm font-semibold text-fx-muted">
               {snapshot.connections.length === 0 ? '当前暂无活跃连接' : '无符合当前筛选条件的连接'}
             </div>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <p className="text-xs text-fx-muted max-w-sm mx-auto">
               {snapshot.connections.length === 0
                 ? '当系统或应用通过系统代理/TUN模式发起网络通信时，活跃连接会实时呈现在此。'
                 : '请尝试清空搜索关键字或重置协议/出站筛选选项。'}
@@ -422,7 +410,7 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-slate-800 text-slate-400 font-medium select-none">
+                <tr className="text-fx-muted font-medium select-none">
                   <th className="pb-3 font-semibold pl-2">目标主机 / 目的端点</th>
                   <th className="pb-3 font-semibold">发起进程</th>
                   <th className="pb-3 font-semibold">命中规则</th>
@@ -433,7 +421,7 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
                   <th className="pb-3 font-semibold text-right pr-2">操作</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/50">
+              <tbody className="">
                 {filteredConnections.map((conn) => {
                   const isClosing = closingIds.has(conn.id)
                   const isDirect = conn.actualNode.toUpperCase() === 'DIRECT'
@@ -441,31 +429,28 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
                   const isTcp = conn.metadata.network === 'TCP'
 
                   return (
-                    <tr
-                      key={conn.id}
-                      className="hover:bg-slate-800/40 transition group"
-                    >
+                    <tr key={conn.id} className="fx-row group">
                       {/* Host & Destination */}
                       <td className="py-3 pl-2 pr-4">
                         <div className="flex items-center gap-2">
                           <span
-                            className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-semibold border ${
+                            className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-semibold ${
                               isTcp
-                                ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                                : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                                ? 'bg-fx-accent-dim text-fx-accent'
+                                : 'bg-amber-500/10 text-amber-400'
                             }`}
                           >
                             {conn.metadata.network}
                           </span>
                           <span
-                            className="font-mono font-bold text-slate-100 truncate max-w-[220px]"
+                            className="font-mono font-bold text-fx-text truncate max-w-[220px]"
                             title={conn.metadata.host}
                           >
                             {conn.metadata.host}
                           </span>
                         </div>
                         <div
-                          className="text-[11px] text-slate-500 font-mono mt-0.5 pl-8"
+                          className="text-[11px] text-fx-muted font-mono mt-0.5 pl-8"
                           title={`${conn.metadata.destinationIP}:${conn.metadata.destinationPort}`}
                         >
                           {conn.metadata.destinationIP}
@@ -477,21 +462,21 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
                       <td className="py-3 pr-4">
                         {conn.metadata.process ? (
                           <div
-                            className="flex items-center gap-1.5 font-mono text-[11px] text-slate-300 max-w-[140px] truncate"
+                            className="flex items-center gap-1.5 font-mono text-[11px] text-fx-text/90 max-w-[140px] truncate"
                             title={conn.metadata.processPath || conn.metadata.process}
                           >
-                            <Terminal className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                            <Terminal className="w-3.5 h-3.5 text-fx-accent shrink-0" />
                             <span className="truncate">{conn.metadata.process}</span>
                           </div>
                         ) : (
-                          <span className="text-[11px] text-slate-600 font-mono">--</span>
+                          <span className="text-[11px] text-fx-muted font-mono">--</span>
                         )}
                       </td>
 
                       {/* Rule */}
                       <td className="py-3 pr-4">
                         <span
-                          className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800/90 text-slate-300 border border-slate-700/60 inline-block max-w-[130px] truncate"
+                          className="text-[10px] font-mono px-2 py-0.5 rounded bg-fx-surface/90 text-fx-text/90 inline-block max-w-[130px] truncate"
                           title={`${conn.rule}${conn.rulePayload ? ` (${conn.rulePayload})` : ''}`}
                         >
                           {conn.rule}
@@ -502,19 +487,13 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
                       <td className="py-3 pr-4">
                         <div className="flex items-center gap-1.5">
                           <span
-                            className={`text-[10px] font-mono px-2 py-0.5 rounded border font-semibold ${
-                              isDirect
-                                ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20'
-                                : isReject
-                                  ? 'bg-rose-500/10 text-rose-300 border-rose-500/20'
-                                  : 'bg-blue-500/10 text-blue-300 border-blue-500/20'
-                            }`}
+                            className={`text-[10px] font-mono px-2 py-0.5 rounded border font-semibold ${ isDirect ? 'bg-fx-accent-dim text-fx-accent ' : isReject ? 'bg-rose-500/10 text-rose-300 ' : 'bg-fx-accent-dim text-fx-accent' }`}
                           >
                             {conn.actualNode}
                           </span>
                         </div>
                         {conn.chains && conn.chains.length > 1 && (
-                          <div className="text-[10px] text-slate-500 font-mono mt-0.5 truncate max-w-[130px]">
+                          <div className="text-[10px] text-fx-muted font-mono mt-0.5 truncate max-w-[130px]">
                             {conn.chains.join(' → ')}
                           </div>
                         )}
@@ -522,28 +501,28 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
 
                       {/* Live Speed */}
                       <td className="py-3 pr-4 text-right font-mono">
-                        <div className="text-[11px] text-emerald-400 font-medium">
+                        <div className="text-[11px] text-fx-accent font-medium">
                           ↓ {formatSpeed(conn.speedDown)}
                         </div>
-                        <div className="text-[10px] text-blue-400">
+                        <div className="text-[10px] text-fx-accent">
                           ↑ {formatSpeed(conn.speedUp)}
                         </div>
                       </td>
 
                       {/* Cumulative Traffic */}
                       <td className="py-3 pr-4 text-right font-mono">
-                        <div className="text-[11px] font-bold text-slate-200">
+                        <div className="text-[11px] font-bold text-fx-text">
                           {formatBytes(conn.download + conn.upload)}
                         </div>
-                        <div className="text-[10px] text-slate-500">
+                        <div className="text-[10px] text-fx-muted">
                           ↓{formatBytes(conn.download)} · ↑{formatBytes(conn.upload)}
                         </div>
                       </td>
 
                       {/* Connected Duration */}
-                      <td className="py-3 px-2 text-center font-mono text-[11px] text-slate-400">
+                      <td className="py-3 px-2 text-center font-mono text-[11px] text-fx-muted">
                         <div className="flex items-center justify-center gap-1">
-                          <Clock className="w-3 h-3 text-slate-500" />
+                          <Clock className="w-3 h-3 text-fx-muted" />
                           <span>{formatDuration(conn.start)}</span>
                         </div>
                       </td>
@@ -553,7 +532,7 @@ export const Connections: React.FC<ConnectionsProps> = ({ onNavigateToTraffic })
                         <button
                           onClick={(e) => handleCloseOne(conn.id, e)}
                           disabled={isClosing}
-                          className="px-2 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/25 text-rose-400 hover:text-rose-300 border border-rose-500/20 text-[11px] font-medium transition disabled:opacity-50"
+                          className="px-2 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/25 text-rose-400 hover:text-rose-300 text-[11px] font-medium transition disabled:opacity-50"
                           title="掐断此连接"
                         >
                           {isClosing ? '断开中...' : '断开'}

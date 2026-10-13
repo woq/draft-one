@@ -69,6 +69,7 @@ tun:
 - React 18 + TypeScript + Tailwind CSS + lucide-react + `@dnd-kit/sortable`
 - 包管理器 pnpm
 - 渲染进程没有 `shadcn/ui` 组件目录。`zustand` 在 `package.json` 中，页面未引用。配置状态在 `App.tsx`，持久化走 IPC。
+- 界面视觉为 Soft Tonal：`--fx-bg` / `--fx-bg-elevated` / `--fx-surface` 色阶分层，无装饰描边，冰蓝 `--fx-accent` 用于选中与开关；字体 Outfit + JetBrains Mono。令牌与工具类在 `src/renderer/src/index.css`。
 - 代码放在 `/mnt/d/code/draft-one`（即 `D:\code\draft-one`）。安装、`pnpm dev` 和 `pnpm build:win` 在 Windows 宿主执行。WSL 用 `scripts/*.sh`，它们转到 `win.sh`。
 
 环境：Windows 10/11 x64，Node.js 20 及以上，pnpm 9 及以上。
@@ -78,6 +79,7 @@ tun:
 ### 3.1 进程与窗口
 
 - `app.requestSingleInstanceLock()`。第二实例只把已有窗口拉到前台。
+- 预览实例（`src/main/preview-mode.ts`）：`pnpm dev` 与路径含 `win-unpacked` 的解压包默认开启；在抢锁前写入独立 `%APPDATA%\draft-one-Preview` 与 `com.draftone.app.preview`，可与正式安装版并存。`--preview` / `--no-preview` 可覆盖。正式安装路径不是预览。
 - 关闭窗口调用 `hide()`，进程留在托盘。真正退出走 `before-quit`。
 - 启动参数含 `--silent` 时不 `show()` 主窗口。托盘始终创建。
 - 可执行文件在安装目录。配置、订阅、规则库和日志在旁边的 `data\`。打包后是 `draft-one.exe` 旁边的 `data\`，开发时是项目目录的 `data\`。HTTP 缓存、GPU 缓存、着色器缓存、崩溃转储和 TEMP 仍用 Electron 与 Windows 的常规位置。
